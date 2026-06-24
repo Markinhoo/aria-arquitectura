@@ -280,6 +280,7 @@ h3 {
 
 .project-card {
   min-height: 620px;
+  border: 0;
   background: transparent;
 }
 
@@ -311,6 +312,24 @@ h3 {
   transform: scale(1.04);
 }
 
+.project-carousel-image {
+  animation: projectImageFade 520ms ease both;
+}
+
+@keyframes projectImageFade {
+  from {
+    filter: blur(8px);
+    opacity: 0.35;
+    transform: scale(1.025);
+  }
+
+  to {
+    filter: blur(0);
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .project-visual::after {
   position: absolute;
   inset: 0;
@@ -325,8 +344,10 @@ h3 {
   z-index: 3;
   bottom: 18px;
   left: 18px;
-  border: 1px solid rgba(255, 250, 242, 0.48);
+  border: 0;
   padding: 8px 10px;
+  color: rgba(255, 250, 242, 0.9);
+  background: rgba(33, 28, 24, 0.34);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.09em;
@@ -343,7 +364,7 @@ h3 {
   gap: 7px;
   padding: 8px 10px;
   color: #fffaf2;
-  background: rgba(33, 28, 24, 0.72);
+  background: rgba(33, 28, 24, 0.48);
   font-size: 0.82rem;
   font-weight: 800;
 }
@@ -353,10 +374,10 @@ h3 {
   z-index: 1;
   top: 14px;
   left: 14px;
-  border: 1px solid rgba(255, 250, 242, 0.44);
+  border: 0;
   padding: 8px 10px;
   color: #fffaf2;
-  background: rgba(47, 56, 56, 0.78);
+  background: rgba(47, 56, 56, 0.54);
   font-size: 0.76rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -432,27 +453,38 @@ h3 {
   position: absolute;
   z-index: 2;
   right: 18px;
-  bottom: 54px;
+  bottom: 58px;
   left: 18px;
-  padding: 18px;
+  padding: 0;
   color: #fffaf2;
-  background: rgba(33, 28, 24, 0.34);
-  backdrop-filter: blur(10px);
+  background: transparent;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.48);
 }
 
 .project-overlay-copy p {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: rgba(255, 250, 242, 0.78);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .project-overlay-copy h3 {
+  margin-bottom: 8px;
   color: #fffaf2;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.75rem, 3vw, 2.55rem);
+  font-weight: 500;
+  line-height: 1;
 }
 
 .project-overlay-copy span {
   display: block;
   color: rgba(255, 250, 242, 0.84);
-  line-height: 1.6;
+  max-width: 92%;
+  line-height: 1.55;
 }
 
 .service-card p,
@@ -955,7 +987,18 @@ h3 {
     right: 14px;
     bottom: 48px;
     left: 14px;
-    padding: 14px;
+  }
+
+  .project-overlay-copy h3 {
+    font-size: 1.75rem;
+  }
+
+  .project-overlay-copy span {
+    display: -webkit-box;
+    max-width: 100%;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .project-carousel-control {

@@ -297,7 +297,12 @@ function PublicSite() {
                 <article className={`project-card ${proyecto.color || proyectosBase[index % proyectosBase.length].color}`} key={projectKey}>
                   <div className="project-visual">
                     {images[activeIndex] ? (
-                      <img src={images[activeIndex]} alt={`${proyecto.nombre} - ${getPhotoLabel(activeIndex)}`} />
+                      <img
+                        className="project-carousel-image"
+                        src={images[activeIndex]}
+                        alt={`${proyecto.nombre} - ${getPhotoLabel(activeIndex)}`}
+                        key={`${projectKey}-${activeIndex}`}
+                      />
                     ) : null}
 
                     <span>{proyecto.tipo}</span>
@@ -341,8 +346,8 @@ function PublicSite() {
                       </>
                     )}
                     <div className="project-overlay-copy">
-                      <p>{proyecto.lugar}</p>
                       <h3>{proyecto.nombre}</h3>
+                      <p>{proyecto.lugar} / {proyecto.tipo}</p>
                       <span>{proyecto.descripcion}</span>
                     </div>
                   </div>
