@@ -14,7 +14,9 @@ npm run dev
 
 1. Crea un proyecto en Supabase.
 2. Ejecuta la migracion de `supabase/migrations/20260624_create_aria_contactos.sql`.
-3. Copia `.env.example` a `.env` y agrega:
+3. Ejecuta la migracion de `supabase/migrations/20260624_admin_gallery_and_messages.sql`.
+4. En Authentication crea un usuario administrador con correo y contraseña.
+5. Copia `.env.example` a `.env` y agrega:
 
 ```bash
 VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
@@ -22,6 +24,7 @@ VITE_SUPABASE_ANON_KEY=tu_clave_anonima
 ```
 
 La tabla `aria_contactos` acepta inserciones anonimas para el formulario publico y mantiene RLS activo.
+La tabla `aria_proyectos` y el bucket `aria-proyectos` permiten que el publico vea proyectos publicados y que usuarios autenticados suban fotos desde `/admin`.
 
 ## Vercel
 
@@ -36,3 +39,4 @@ La tabla `aria_contactos` acepta inserciones anonimas para el formulario publico
 - Cambia telefono y WhatsApp en `src/App.jsx`.
 - Cambia correo e Instagram en `src/App.jsx`.
 - Reemplaza la imagen hero en `public/aria-hero.png`.
+- Entra a `/admin` para subir proyectos y revisar mensajes de contacto.

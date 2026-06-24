@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   FaArrowRight,
   FaBuilding,
@@ -7,32 +7,42 @@ import {
   FaInstagram,
   FaLayerGroup,
   FaLocationDot,
+  FaLock,
   FaPhone,
+  FaPlus,
   FaRulerCombined,
+  FaRightFromBracket,
+  FaUpload,
   FaWhatsapp
 } from 'react-icons/fa6';
 import { supabase, supabaseReady } from './lib/supabaseClient';
 
-const proyectos = [
+const proyectosBase = [
   {
+    id: 'casa-lumbre',
     nombre: 'Casa Lumbre',
     tipo: 'Residencial',
     lugar: 'Durango, MX',
     descripcion: 'Volumenes limpios, patio central y materiales de bajo mantenimiento.',
+    imagen_url: '',
     color: 'proyecto-terracota'
   },
   {
+    id: 'estudio-norte',
     nombre: 'Estudio Norte',
     tipo: 'Comercial',
     lugar: 'Torreon, MX',
     descripcion: 'Espacio flexible para atencion, exhibicion y trabajo colaborativo.',
+    imagen_url: '',
     color: 'proyecto-oliva'
   },
   {
+    id: 'interior-altura',
     nombre: 'Interior Altura',
     tipo: 'Interiorismo',
     lugar: 'Monterrey, MX',
     descripcion: 'Iluminacion indirecta, carpinteria a medida y atmosfera serena.',
+    imagen_url: '',
     color: 'proyecto-carbon'
   }
 ];
@@ -65,10 +75,58 @@ const initialForm = {
   mensaje: ''
 };
 
+const initialProjectForm = {
+  nombre: '',
+  tipo: 'Residencial',
+  lugar: '',
+  descripcion: '',
+  imagen: null
+};
+
 function App() {
+  const [path, setPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const updatePath = () => setPath(window.location.pathname);
+    window.addEventListener('popstate', updatePath);
+    return () => window.removeEventListener('popstate', updatePath);
+  }, []);
+
+  if (path.startsWith('/admin')) {
+    return <AdminApp />;
+  }
+
+  return <PublicSite />;
+}
+
+function PublicSite() {
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState({ type: 'idle', message: '' });
   const [sending, setSending] = useState(false);
+  const [proyectos, setProyectos] = useState(proyectosBase);
+
+  useEffect(() => {
+    let active = true;
+
+    const cargarProyectos = async () => {
+      if (!supabaseReady) return;
+
+      const { data, error } = await supabase
+        .from('aria_proyectos')
+        .select('id,nombre,tipo,lugar,descripcion,imagen_url')
+        .eq('publicado', true)
+        .order('created_at', { ascending: false });
+
+      if (!active || error || !data?.length) return;
+      setProyectos(data);
+    };
+
+    cargarProyectos();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const whatsappUrl = useMemo(() => {
     const text = `Hola Aria Arquitectura, me gustaria platicar sobre un proyecto ${form.tipo_proyecto.toLowerCase()}.`;
@@ -167,8 +225,8 @@ function App() {
             <span>Años de experiencia</span>
           </article>
           <article>
-            <strong>48</strong>
-            <span>Proyectos desarrollados</span>
+            <strong>{proyectos.length}</strong>
+            <span>Proyectos en galeria</span>
           </article>
           <article>
             <strong>3</strong>
@@ -183,9 +241,12 @@ function App() {
           </div>
 
           <div className="project-grid">
-            {proyectos.map((proyecto) => (
-              <article className={`project-card ${proyecto.color}`} key={proyecto.nombre}>
+            {proyectos.map((proyecto, index) => (
+              <article className={`project-card ${proyecto.color || proyectosBase[index % proyectosBase.length].color}`} key={proyecto.id || proyecto.nombre}>
                 <div className="project-visual">
+                  {proyecto.imagen_url ? (
+                    <img src={proyecto.imagen_url} alt={proyecto.nombre} />
+                  ) : null}
                   <span>{proyecto.tipo}</span>
                 </div>
                 <div className="project-body">
@@ -305,6 +366,341 @@ function App() {
         <span>Arquitectura residencial, comercial e interiorismo.</span>
       </footer>
     </div>
+  );
+}
+
+function AdminApp() {
+  const [session, setSession] = useState(null);
+  const [loadingSession, setLoadingSession] = useState(true);
+
+  useEffect(() => {
+    if (!supabaseReady) {
+      setLoadingSession(false);
+      return undefined;
+    }
+
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setLoadingSession(false);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession);
+      setLoadingSession(false);
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  if (!supabaseReady) {
+    return (
+      <AdminShell>
+        <div className="admin-empty">
+          Configura las variables de Supabase para activar el panel de administracion.
+        </div>
+      </AdminShell>
+    );
+  }
+
+  if (loadingSession) {
+    return (
+      <AdminShell>
+        <div className="admin-empty">Cargando panel...</div>
+      </AdminShell>
+    );
+  }
+
+  if (!session) {
+    return <AdminLogin />;
+  }
+
+  return <AdminDashboard userEmail={session.user.email} />;
+}
+
+function AdminShell({ children }) {
+  return (
+    <div className="admin-shell">
+      <header className="admin-topbar">
+        <a className="brand admin-brand" href="/">
+          <span className="brand-mark">A</span>
+          <span>
+            <strong>Aria Arquitectura</strong>
+            <small>Panel administrativo</small>
+          </span>
+        </a>
+      </header>
+      {children}
+    </div>
+  );
+}
+
+function AdminLogin() {
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [status, setStatus] = useState('');
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setSending(true);
+    setStatus('');
+
+    const { error } = await supabase.auth.signInWithPassword(credentials);
+    setSending(false);
+
+    if (error) {
+      setStatus('No se pudo iniciar sesion. Revisa correo y contraseña.');
+    }
+  };
+
+  return (
+    <AdminShell>
+      <main className="admin-login">
+        <form className="admin-card admin-login-card" onSubmit={handleSubmit}>
+          <div className="admin-card-heading">
+            <span className="service-icon"><FaLock aria-hidden="true" /></span>
+            <div>
+              <p className="eyebrow">Admin</p>
+              <h1>Acceso privado</h1>
+            </div>
+          </div>
+
+          <label>
+            Correo
+            <input
+              type="email"
+              value={credentials.email}
+              onChange={(event) => setCredentials((current) => ({ ...current, email: event.target.value }))}
+              required
+            />
+          </label>
+
+          <label>
+            Contraseña
+            <input
+              type="password"
+              value={credentials.password}
+              onChange={(event) => setCredentials((current) => ({ ...current, password: event.target.value }))}
+              required
+            />
+          </label>
+
+          {status && <p className="form-status error">{status}</p>}
+
+          <button className="button primary" disabled={sending} type="submit">
+            {sending ? 'Entrando...' : 'Entrar'}
+          </button>
+        </form>
+      </main>
+    </AdminShell>
+  );
+}
+
+function AdminDashboard({ userEmail }) {
+  const [projectForm, setProjectForm] = useState(initialProjectForm);
+  const [proyectos, setProyectos] = useState([]);
+  const [mensajes, setMensajes] = useState([]);
+  const [status, setStatus] = useState({ type: 'idle', message: '' });
+  const [uploading, setUploading] = useState(false);
+
+  const cargarAdmin = async () => {
+    const [{ data: proyectosData }, { data: mensajesData }] = await Promise.all([
+      supabase
+        .from('aria_proyectos')
+        .select('id,nombre,tipo,lugar,descripcion,imagen_url,publicado,created_at')
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('aria_contactos')
+        .select('id,nombre,email,telefono,tipo_proyecto,mensaje,estado,created_at')
+        .order('created_at', { ascending: false })
+    ]);
+
+    setProyectos(proyectosData || []);
+    setMensajes(mensajesData || []);
+  };
+
+  useEffect(() => {
+    cargarAdmin();
+  }, []);
+
+  const handleProjectChange = (event) => {
+    const { name, value, files } = event.target;
+    setProjectForm((current) => ({
+      ...current,
+      [name]: files ? files[0] : value
+    }));
+  };
+
+  const handleProjectSubmit = async (event) => {
+    event.preventDefault();
+    setUploading(true);
+    setStatus({ type: 'idle', message: '' });
+
+    if (!projectForm.imagen) {
+      setUploading(false);
+      setStatus({ type: 'error', message: 'Selecciona una foto para el proyecto.' });
+      return;
+    }
+
+    const extension = projectForm.imagen.name.split('.').pop();
+    const safeName = projectForm.nombre
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    const filePath = `${Date.now()}-${safeName || 'proyecto'}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('aria-proyectos')
+      .upload(filePath, projectForm.imagen, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (uploadError) {
+      setUploading(false);
+      setStatus({ type: 'error', message: 'No se pudo subir la foto. Revisa el bucket de Supabase.' });
+      return;
+    }
+
+    const { data: publicData } = supabase.storage
+      .from('aria-proyectos')
+      .getPublicUrl(filePath);
+
+    const { error: insertError } = await supabase.from('aria_proyectos').insert({
+      nombre: projectForm.nombre.trim(),
+      tipo: projectForm.tipo,
+      lugar: projectForm.lugar.trim(),
+      descripcion: projectForm.descripcion.trim(),
+      imagen_url: publicData.publicUrl,
+      storage_path: filePath,
+      publicado: true
+    });
+
+    setUploading(false);
+
+    if (insertError) {
+      setStatus({ type: 'error', message: 'La foto subio, pero no se pudo guardar el proyecto.' });
+      return;
+    }
+
+    setProjectForm(initialProjectForm);
+    event.target.reset();
+    setStatus({ type: 'success', message: 'Proyecto publicado en la galeria.' });
+    cargarAdmin();
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  return (
+    <AdminShell>
+      <main className="admin-dashboard">
+        <div className="admin-dashboard-heading">
+          <div>
+            <p className="eyebrow">Panel</p>
+            <h1>Gestion de Aria</h1>
+            <span>{userEmail}</span>
+          </div>
+          <button className="button admin-secondary" type="button" onClick={handleLogout}>
+            <FaRightFromBracket aria-hidden="true" /> Salir
+          </button>
+        </div>
+
+        <section className="admin-grid">
+          <form className="admin-card admin-form" onSubmit={handleProjectSubmit}>
+            <div className="admin-card-heading">
+              <span className="service-icon"><FaUpload aria-hidden="true" /></span>
+              <div>
+                <p className="eyebrow">Galeria</p>
+                <h2>Subir proyecto</h2>
+              </div>
+            </div>
+
+            <label>
+              Nombre del proyecto
+              <input name="nombre" value={projectForm.nombre} onChange={handleProjectChange} required />
+            </label>
+
+            <label>
+              Tipo
+              <select name="tipo" value={projectForm.tipo} onChange={handleProjectChange}>
+                <option>Residencial</option>
+                <option>Comercial</option>
+                <option>Interiorismo</option>
+                <option>Remodelacion</option>
+              </select>
+            </label>
+
+            <label>
+              Ubicacion
+              <input name="lugar" value={projectForm.lugar} onChange={handleProjectChange} required />
+            </label>
+
+            <label>
+              Foto
+              <input name="imagen" type="file" accept="image/*" onChange={handleProjectChange} required />
+            </label>
+
+            <label className="full">
+              Descripcion
+              <textarea name="descripcion" rows="4" value={projectForm.descripcion} onChange={handleProjectChange} required />
+            </label>
+
+            {status.message && <p className={`form-status ${status.type}`}>{status.message}</p>}
+
+            <button className="button primary full" disabled={uploading} type="submit">
+              {uploading ? 'Publicando...' : 'Publicar proyecto'} <FaPlus aria-hidden="true" />
+            </button>
+          </form>
+
+          <section className="admin-card">
+            <div className="admin-card-heading">
+              <div>
+                <p className="eyebrow">Contacto</p>
+                <h2>Mensajes recibidos</h2>
+              </div>
+            </div>
+
+            <div className="message-list">
+              {mensajes.length ? mensajes.map((mensaje) => (
+                <article className="message-item" key={mensaje.id}>
+                  <div>
+                    <strong>{mensaje.nombre}</strong>
+                    <span>{new Date(mensaje.created_at).toLocaleDateString('es-MX')}</span>
+                  </div>
+                  <p>{mensaje.mensaje}</p>
+                  <small>{mensaje.email} {mensaje.telefono ? `- ${mensaje.telefono}` : ''} - {mensaje.tipo_proyecto}</small>
+                </article>
+              )) : <p className="admin-muted">Aun no hay mensajes.</p>}
+            </div>
+          </section>
+        </section>
+
+        <section className="admin-card">
+          <div className="admin-card-heading">
+            <div>
+              <p className="eyebrow">Publicados</p>
+              <h2>Proyectos visibles</h2>
+            </div>
+          </div>
+
+          <div className="admin-project-list">
+            {proyectos.length ? proyectos.map((proyecto) => (
+              <article className="admin-project-item" key={proyecto.id}>
+                <img src={proyecto.imagen_url} alt={proyecto.nombre} />
+                <div>
+                  <strong>{proyecto.nombre}</strong>
+                  <span>{proyecto.tipo} - {proyecto.lugar}</span>
+                </div>
+              </article>
+            )) : <p className="admin-muted">Aun no hay proyectos subidos.</p>}
+          </div>
+        </section>
+      </main>
+    </AdminShell>
   );
 }
 
