@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   FaArrowRight,
+  FaArrowUp,
   FaBuilding,
   FaCheck,
+  FaChevronLeft,
+  FaChevronRight,
   FaEnvelope,
   FaInstagram,
   FaLayerGroup,
@@ -95,6 +98,12 @@ function getProjectImages(proyecto) {
   return proyecto.imagen_url ? [proyecto.imagen_url] : [];
 }
 
+function getPhotoLabel(index) {
+  if (index === 0) return 'Antes';
+  if (index === 1) return 'Despues';
+  return `Detalle ${index + 1}`;
+}
+
 function App() {
   const [path, setPath] = useState(window.location.pathname);
 
@@ -116,6 +125,8 @@ function PublicSite() {
   const [status, setStatus] = useState({ type: 'idle', message: '' });
   const [sending, setSending] = useState(false);
   const [proyectos, setProyectos] = useState(proyectosBase);
+  const [activeSlides, setActiveSlides] = useState({});
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -138,6 +149,16 @@ function PublicSite() {
     return () => {
       active = false;
     };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 520);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const whatsappUrl = useMemo(() => {
@@ -187,6 +208,23 @@ function PublicSite() {
       type: 'success',
       message: 'Gracias. Recibimos tu mensaje y te contactaremos pronto.'
     });
+  };
+
+  const changeProjectSlide = (projectKey, total, direction) => {
+    setActiveSlides((current) => {
+      const currentIndex = current[projectKey] || 0;
+      return {
+        ...current,
+        [projectKey]: (currentIndex + direction + total) % total
+      };
+    });
+  };
+
+  const setProjectSlide = (projectKey, index) => {
+    setActiveSlides((current) => ({
+      ...current,
+      [projectKey]: index
+    }));
   };
 
   return (
@@ -253,26 +291,67 @@ function PublicSite() {
           </div>
 
           <div className="project-grid">
-            {proyectos.map((proyecto, index) => (
-              <article className={`project-card ${proyecto.color || proyectosBase[index % proyectosBase.length].color}`} key={proyecto.id || proyecto.nombre}>
-                <div className="project-visual">
-                  {getProjectImages(proyecto)[0] ? (
-                    <img src={getProjectImages(proyecto)[0]} alt={proyecto.nombre} />
-                  ) : null}
-                  <span>{proyecto.tipo}</span>
-                  {getProjectImages(proyecto).length > 1 && (
-                    <small className="project-photo-count">
-                      <FaImages aria-hidden="true" /> {getProjectImages(proyecto).length}
-                    </small>
-                  )}
-                </div>
-                <div className="project-body">
-                  <p>{proyecto.lugar}</p>
-                  <h3>{proyecto.nombre}</h3>
-                  <span>{proyecto.descripcion}</span>
-                </div>
-              </article>
-            ))}
+            {proyectos.map((proyecto, index) => {
+              const projectKey = proyecto.id || proyecto.nombre;
+              const images = getProjectImages(proyecto);
+              const activeIndex = Math.min(activeSlides[projectKey] || 0, Math.max(images.length - 1, 0));
+
+              return (
+                <article className={`project-card ${proyecto.color || proyectosBase[index % proyectosBase.length].color}`} key={projectKey}>
+                  <div className="project-visual">
+                    {images[activeIndex] ? (
+                      <img src={images[activeIndex]} alt={`${proyecto.nombre} - ${getPhotoLabel(activeIndex)}`} />
+                    ) : null}
+
+                    <span>{proyecto.tipo}</span>
+
+                    {images.length > 0 && (
+                      <small className="project-stage-label">{getPhotoLabel(activeIndex)}</small>
+                    )}
+
+                    {images.length > 1 && (
+                      <>
+                        <small className="project-photo-count">
+                          <FaImages aria-hidden="true" /> {activeIndex + 1}/{images.length}
+                        </small>
+                        <button
+                          className="project-carousel-control prev"
+                          type="button"
+                          aria-label={`Ver foto anterior de ${proyecto.nombre}`}
+                          onClick={() => changeProjectSlide(projectKey, images.length, -1)}
+                        >
+                          <FaChevronLeft aria-hidden="true" />
+                        </button>
+                        <button
+                          className="project-carousel-control next"
+                          type="button"
+                          aria-label={`Ver siguiente foto de ${proyecto.nombre}`}
+                          onClick={() => changeProjectSlide(projectKey, images.length, 1)}
+                        >
+                          <FaChevronRight aria-hidden="true" />
+                        </button>
+                        <div className="project-carousel-dots" aria-label={`Fotos de ${proyecto.nombre}`}>
+                          {images.map((image, imageIndex) => (
+                            <button
+                              className={imageIndex === activeIndex ? 'active' : ''}
+                              type="button"
+                              key={image}
+                              aria-label={`Ver ${getPhotoLabel(imageIndex)} de ${proyecto.nombre}`}
+                              onClick={() => setProjectSlide(projectKey, imageIndex)}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div className="project-body">
+                    <p>{proyecto.lugar}</p>
+                    <h3>{proyecto.nombre}</h3>
+                    <span>{proyecto.descripcion}</span>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
@@ -382,6 +461,28 @@ function PublicSite() {
         <strong>Aria Arquitectura</strong>
         <span>Arquitectura residencial, comercial e interiorismo.</span>
       </footer>
+
+      <div className="floating-actions" aria-label="Acciones rapidas">
+        {showScrollTop && (
+          <button
+            className="floating-button scroll-top-button"
+            type="button"
+            aria-label="Volver arriba"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            <FaArrowUp aria-hidden="true" />
+          </button>
+        )}
+        <a
+          className="floating-button whatsapp-floating"
+          href={whatsappUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Contactar por WhatsApp"
+        >
+          <FaWhatsapp aria-hidden="true" />
+        </a>
+      </div>
     </div>
   );
 }

@@ -341,6 +341,78 @@ h3 {
   font-weight: 800;
 }
 
+.project-stage-label {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  left: 14px;
+  border: 1px solid rgba(255, 250, 242, 0.44);
+  padding: 8px 10px;
+  color: #fffaf2;
+  background: rgba(47, 56, 56, 0.78);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-carousel-control {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid rgba(255, 250, 242, 0.34);
+  color: #fffaf2;
+  background: rgba(33, 28, 24, 0.64);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.project-carousel-control:hover {
+  background: rgba(163, 100, 63, 0.9);
+  transform: translateY(-50%) scale(1.04);
+}
+
+.project-carousel-control.prev {
+  left: 14px;
+}
+
+.project-carousel-control.next {
+  right: 14px;
+}
+
+.project-carousel-dots {
+  position: absolute;
+  z-index: 2;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  max-width: calc(100% - 36px);
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.project-carousel-dots button {
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 250, 242, 0.84);
+  border-radius: 999px;
+  padding: 0;
+  background: rgba(255, 250, 242, 0.24);
+  cursor: pointer;
+}
+
+.project-carousel-dots button.active {
+  width: 26px;
+  background: #fffaf2;
+}
+
 .proyecto-oliva .project-visual {
   background-color: #69735a;
 }
@@ -521,6 +593,43 @@ h3 {
   padding: 26px clamp(20px, 5vw, 72px);
   color: rgba(255, 250, 242, 0.76);
   background: #211c18;
+}
+
+.floating-actions {
+  position: fixed;
+  z-index: 25;
+  right: clamp(16px, 3vw, 28px);
+  bottom: clamp(16px, 3vw, 28px);
+  display: grid;
+  gap: 10px;
+}
+
+.floating-button {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1px solid rgba(255, 250, 242, 0.2);
+  color: #fffaf2;
+  background: #2f3838;
+  box-shadow: 0 18px 40px rgba(33, 28, 24, 0.26);
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.floating-button:hover {
+  background: #a3643f;
+  transform: translateY(-2px);
+}
+
+.whatsapp-floating {
+  background: #3d352f;
+}
+
+.scroll-top-button {
+  background: #a3643f;
 }
 
 .admin-shell {
@@ -802,6 +911,24 @@ h3 {
 
   .project-card {
     min-height: auto;
+  }
+
+  .project-carousel-control {
+    width: 36px;
+    height: 36px;
+  }
+
+  .project-stage-label,
+  .project-photo-count {
+    top: 10px;
+  }
+
+  .project-stage-label {
+    left: 10px;
+  }
+
+  .project-photo-count {
+    right: 10px;
   }
 
   .footer {
