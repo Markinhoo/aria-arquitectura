@@ -262,9 +262,6 @@ function PublicSite() {
               <a className="button primary" href="#contacto">
                 Iniciar proyecto <FaArrowRight aria-hidden="true" />
               </a>
-              <a className="button ghost" href={whatsappUrl} target="_blank" rel="noreferrer">
-                <FaWhatsapp aria-hidden="true" /> WhatsApp
-              </a>
             </div>
           </div>
         </section>
@@ -343,11 +340,11 @@ function PublicSite() {
                         </div>
                       </>
                     )}
-                  </div>
-                  <div className="project-body">
-                    <p>{proyecto.lugar}</p>
-                    <h3>{proyecto.nombre}</h3>
-                    <span>{proyecto.descripcion}</span>
+                    <div className="project-overlay-copy">
+                      <p>{proyecto.lugar}</p>
+                      <h3>{proyecto.nombre}</h3>
+                      <span>{proyecto.descripcion}</span>
+                    </div>
                   </div>
                 </article>
               );

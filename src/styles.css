@@ -279,14 +279,17 @@ h3 {
 }
 
 .project-card {
-  min-height: 420px;
+  min-height: 620px;
+  background: transparent;
 }
 
 .project-visual {
   position: relative;
   overflow: hidden;
   display: flex;
-  min-height: 245px;
+  min-height: 620px;
+  height: 100%;
+  aspect-ratio: 3 / 4.35;
   align-items: flex-end;
   padding: 18px;
   color: #fffaf2;
@@ -312,12 +315,16 @@ h3 {
   position: absolute;
   inset: 0;
   content: "";
-  background: linear-gradient(180deg, rgba(33, 28, 24, 0) 35%, rgba(33, 28, 24, 0.72));
+  background:
+    linear-gradient(180deg, rgba(33, 28, 24, 0.04) 0%, rgba(33, 28, 24, 0.22) 48%, rgba(33, 28, 24, 0.72) 100%),
+    linear-gradient(90deg, rgba(33, 28, 24, 0.28), rgba(33, 28, 24, 0));
 }
 
 .project-visual span {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  z-index: 3;
+  bottom: 18px;
+  left: 18px;
   border: 1px solid rgba(255, 250, 242, 0.48);
   padding: 8px 10px;
   font-size: 0.78rem;
@@ -421,16 +428,33 @@ h3 {
   background-color: #2f3838;
 }
 
-.project-body {
-  padding: 22px;
+.project-overlay-copy {
+  position: absolute;
+  z-index: 2;
+  right: 18px;
+  bottom: 54px;
+  left: 18px;
+  padding: 18px;
+  color: #fffaf2;
+  background: rgba(33, 28, 24, 0.34);
+  backdrop-filter: blur(10px);
 }
 
-.project-body p {
+.project-overlay-copy p {
   margin-bottom: 8px;
-  color: #8a7768;
+  color: rgba(255, 250, 242, 0.78);
 }
 
-.project-body span,
+.project-overlay-copy h3 {
+  color: #fffaf2;
+}
+
+.project-overlay-copy span {
+  display: block;
+  color: rgba(255, 250, 242, 0.84);
+  line-height: 1.6;
+}
+
 .service-card p,
 .contact-copy p {
   color: #665a50;
@@ -617,6 +641,16 @@ h3 {
   transition:
     background 180ms ease,
     transform 180ms ease;
+}
+
+.floating-button svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.whatsapp-floating svg {
+  width: 1.55rem;
+  height: 1.55rem;
 }
 
 .floating-button:hover {
@@ -911,6 +945,17 @@ h3 {
 
   .project-card {
     min-height: auto;
+  }
+
+  .project-visual {
+    min-height: 560px;
+  }
+
+  .project-overlay-copy {
+    right: 14px;
+    bottom: 48px;
+    left: 14px;
+    padding: 14px;
   }
 
   .project-carousel-control {
