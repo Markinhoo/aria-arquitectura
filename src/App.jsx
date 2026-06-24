@@ -9,6 +9,7 @@ import {
   FaLocationDot,
   FaLock,
   FaPhone,
+  FaImages,
   FaPlus,
   FaRulerCombined,
   FaRightFromBracket,
@@ -25,6 +26,7 @@ const proyectosBase = [
     lugar: 'Durango, MX',
     descripcion: 'Volumenes limpios, patio central y materiales de bajo mantenimiento.',
     imagen_url: '',
+    imagenes_urls: [],
     color: 'proyecto-terracota'
   },
   {
@@ -34,6 +36,7 @@ const proyectosBase = [
     lugar: 'Torreon, MX',
     descripcion: 'Espacio flexible para atencion, exhibicion y trabajo colaborativo.',
     imagen_url: '',
+    imagenes_urls: [],
     color: 'proyecto-oliva'
   },
   {
@@ -43,6 +46,7 @@ const proyectosBase = [
     lugar: 'Monterrey, MX',
     descripcion: 'Iluminacion indirecta, carpinteria a medida y atmosfera serena.',
     imagen_url: '',
+    imagenes_urls: [],
     color: 'proyecto-carbon'
   }
 ];
@@ -80,8 +84,16 @@ const initialProjectForm = {
   tipo: 'Residencial',
   lugar: '',
   descripcion: '',
-  imagen: null
+  imagenes: []
 };
+
+function getProjectImages(proyecto) {
+  if (Array.isArray(proyecto.imagenes_urls) && proyecto.imagenes_urls.length) {
+    return proyecto.imagenes_urls;
+  }
+
+  return proyecto.imagen_url ? [proyecto.imagen_url] : [];
+}
 
 function App() {
   const [path, setPath] = useState(window.location.pathname);
@@ -113,7 +125,7 @@ function PublicSite() {
 
       const { data, error } = await supabase
         .from('aria_proyectos')
-        .select('id,nombre,tipo,lugar,descripcion,imagen_url')
+        .select('id,nombre,tipo,lugar,descripcion,imagen_url,imagenes_urls')
         .eq('publicado', true)
         .order('created_at', { ascending: false });
 
@@ -244,10 +256,15 @@ function PublicSite() {
             {proyectos.map((proyecto, index) => (
               <article className={`project-card ${proyecto.color || proyectosBase[index % proyectosBase.length].color}`} key={proyecto.id || proyecto.nombre}>
                 <div className="project-visual">
-                  {proyecto.imagen_url ? (
-                    <img src={proyecto.imagen_url} alt={proyecto.nombre} />
+                  {getProjectImages(proyecto)[0] ? (
+                    <img src={getProjectImages(proyecto)[0]} alt={proyecto.nombre} />
                   ) : null}
                   <span>{proyecto.tipo}</span>
+                  {getProjectImages(proyecto).length > 1 && (
+                    <small className="project-photo-count">
+                      <FaImages aria-hidden="true" /> {getProjectImages(proyecto).length}
+                    </small>
+                  )}
                 </div>
                 <div className="project-body">
                   <p>{proyecto.lugar}</p>
@@ -506,7 +523,7 @@ function AdminDashboard({ userEmail }) {
     const [{ data: proyectosData }, { data: mensajesData }] = await Promise.all([
       supabase
         .from('aria_proyectos')
-        .select('id,nombre,tipo,lugar,descripcion,imagen_url,publicado,created_at')
+        .select('id,nombre,tipo,lugar,descripcion,imagen_url,imagenes_urls,publicado,created_at')
         .order('created_at', { ascending: false }),
       supabase
         .from('aria_contactos')
@@ -526,7 +543,7 @@ function AdminDashboard({ userEmail }) {
     const { name, value, files } = event.target;
     setProjectForm((current) => ({
       ...current,
-      [name]: files ? files[0] : value
+      [name]: files ? Array.from(files) : value
     }));
   };
 
@@ -535,13 +552,12 @@ function AdminDashboard({ userEmail }) {
     setUploading(true);
     setStatus({ type: 'idle', message: '' });
 
-    if (!projectForm.imagen) {
+    if (!projectForm.imagenes.length) {
       setUploading(false);
-      setStatus({ type: 'error', message: 'Selecciona una foto para el proyecto.' });
+      setStatus({ type: 'error', message: 'Selecciona al menos una foto para el proyecto.' });
       return;
     }
 
-    const extension = projectForm.imagen.name.split('.').pop();
     const safeName = projectForm.nombre
       .trim()
       .toLowerCase()
@@ -549,45 +565,56 @@ function AdminDashboard({ userEmail }) {
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
-    const filePath = `${Date.now()}-${safeName || 'proyecto'}.${extension}`;
+    const uploadedImages = [];
+    const uploadedPaths = [];
 
-    const { error: uploadError } = await supabase.storage
-      .from('aria-proyectos')
-      .upload(filePath, projectForm.imagen, {
-        cacheControl: '3600',
-        upsert: false
-      });
+    for (const [index, file] of projectForm.imagenes.entries()) {
+      const extension = file.name.split('.').pop();
+      const filePath = `${Date.now()}-${safeName || 'proyecto'}-${index + 1}.${extension}`;
 
-    if (uploadError) {
-      setUploading(false);
-      setStatus({ type: 'error', message: 'No se pudo subir la foto. Revisa el bucket de Supabase.' });
-      return;
+      const { error: uploadError } = await supabase.storage
+        .from('aria-proyectos')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) {
+        setUploading(false);
+        setStatus({ type: 'error', message: 'No se pudieron subir todas las fotos. Revisa el bucket de Supabase.' });
+        return;
+      }
+
+      const { data: publicData } = supabase.storage
+        .from('aria-proyectos')
+        .getPublicUrl(filePath);
+
+      uploadedImages.push(publicData.publicUrl);
+      uploadedPaths.push(filePath);
     }
-
-    const { data: publicData } = supabase.storage
-      .from('aria-proyectos')
-      .getPublicUrl(filePath);
 
     const { error: insertError } = await supabase.from('aria_proyectos').insert({
       nombre: projectForm.nombre.trim(),
       tipo: projectForm.tipo,
       lugar: projectForm.lugar.trim(),
       descripcion: projectForm.descripcion.trim(),
-      imagen_url: publicData.publicUrl,
-      storage_path: filePath,
+      imagen_url: uploadedImages[0],
+      imagenes_urls: uploadedImages,
+      storage_path: uploadedPaths[0],
+      storage_paths: uploadedPaths,
       publicado: true
     });
 
     setUploading(false);
 
     if (insertError) {
-      setStatus({ type: 'error', message: 'La foto subio, pero no se pudo guardar el proyecto.' });
+      setStatus({ type: 'error', message: 'Las fotos subieron, pero no se pudo guardar el proyecto.' });
       return;
     }
 
     setProjectForm(initialProjectForm);
     event.target.reset();
-    setStatus({ type: 'success', message: 'Proyecto publicado en la galeria.' });
+    setStatus({ type: 'success', message: 'Proyecto publicado en la galeria con sus fotos.' });
     cargarAdmin();
   };
 
@@ -640,9 +667,15 @@ function AdminDashboard({ userEmail }) {
             </label>
 
             <label>
-              Foto
-              <input name="imagen" type="file" accept="image/*" onChange={handleProjectChange} required />
+              Fotos
+              <input name="imagenes" type="file" accept="image/*" multiple onChange={handleProjectChange} required />
             </label>
+
+            {projectForm.imagenes.length > 0 && (
+              <p className="selected-files full">
+                {projectForm.imagenes.length} archivo{projectForm.imagenes.length === 1 ? '' : 's'} seleccionado{projectForm.imagenes.length === 1 ? '' : 's'}
+              </p>
+            )}
 
             <label className="full">
               Descripcion
@@ -690,10 +723,11 @@ function AdminDashboard({ userEmail }) {
           <div className="admin-project-list">
             {proyectos.length ? proyectos.map((proyecto) => (
               <article className="admin-project-item" key={proyecto.id}>
-                <img src={proyecto.imagen_url} alt={proyecto.nombre} />
+                <img src={getProjectImages(proyecto)[0]} alt={proyecto.nombre} />
                 <div>
                   <strong>{proyecto.nombre}</strong>
                   <span>{proyecto.tipo} - {proyecto.lugar}</span>
+                  <small>{getProjectImages(proyecto).length} foto{getProjectImages(proyecto).length === 1 ? '' : 's'}</small>
                 </div>
               </article>
             )) : <p className="admin-muted">Aun no hay proyectos subidos.</p>}

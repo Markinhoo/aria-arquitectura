@@ -326,6 +326,21 @@ h3 {
   text-transform: uppercase;
 }
 
+.project-photo-count {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+  color: #fffaf2;
+  background: rgba(33, 28, 24, 0.72);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
 .proyecto-oliva .project-visual {
   background-color: #69735a;
 }
@@ -687,8 +702,15 @@ h3 {
 }
 
 .admin-project-item strong,
-.admin-project-item span {
+.admin-project-item span,
+.admin-project-item small {
   display: block;
+}
+
+.selected-files {
+  margin: 0;
+  color: #665a50;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 900px) {
