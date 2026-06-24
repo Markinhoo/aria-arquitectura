@@ -339,21 +339,6 @@ h3 {
     linear-gradient(90deg, rgba(33, 28, 24, 0.28), rgba(33, 28, 24, 0));
 }
 
-.project-visual span {
-  position: absolute;
-  z-index: 3;
-  bottom: 18px;
-  left: 18px;
-  border: 0;
-  padding: 8px 10px;
-  color: rgba(255, 250, 242, 0.9);
-  background: rgba(33, 28, 24, 0.34);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
 .project-photo-count {
   position: absolute;
   z-index: 1;
@@ -462,7 +447,7 @@ h3 {
 }
 
 .project-overlay-copy p {
-  margin-bottom: 10px;
+  margin: 18px 0 0;
   color: rgba(255, 250, 242, 0.78);
   font-size: 0.82rem;
   font-weight: 800;

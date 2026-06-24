@@ -305,8 +305,6 @@ function PublicSite() {
                       />
                     ) : null}
 
-                    <span>{proyecto.tipo}</span>
-
                     {images.length > 0 && (
                       <small className="project-stage-label">{getPhotoLabel(activeIndex)}</small>
                     )}
@@ -347,8 +345,8 @@ function PublicSite() {
                     )}
                     <div className="project-overlay-copy">
                       <h3>{proyecto.nombre}</h3>
-                      <p>{proyecto.lugar} / {proyecto.tipo}</p>
                       <span>{proyecto.descripcion}</span>
+                      <p>{proyecto.lugar} / {proyecto.tipo}</p>
                     </div>
                   </div>
                 </article>
