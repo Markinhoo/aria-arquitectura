@@ -558,6 +558,20 @@ function AdminDashboard({ userEmail }) {
       return;
     }
 
+    const { error: schemaError } = await supabase
+      .from('aria_proyectos')
+      .select('imagenes_urls,storage_paths')
+      .limit(1);
+
+    if (schemaError) {
+      setUploading(false);
+      setStatus({
+        type: 'error',
+        message: 'Falta actualizar Supabase. Ejecuta la migracion de multiples imagenes antes de publicar proyectos.'
+      });
+      return;
+    }
+
     const safeName = projectForm.nombre
       .trim()
       .toLowerCase()
@@ -608,7 +622,14 @@ function AdminDashboard({ userEmail }) {
     setUploading(false);
 
     if (insertError) {
-      setStatus({ type: 'error', message: 'Las fotos subieron, pero no se pudo guardar el proyecto.' });
+      if (uploadedPaths.length) {
+        await supabase.storage.from('aria-proyectos').remove(uploadedPaths);
+      }
+
+      setStatus({
+        type: 'error',
+        message: `Las fotos subieron, pero no se pudo guardar el proyecto: ${insertError.message}`
+      });
       return;
     }
 
