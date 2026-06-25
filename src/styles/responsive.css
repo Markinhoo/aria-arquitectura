@@ -19,7 +19,6 @@
     align-content: start;
   }
 
-  .metrics,
   .project-grid,
   .service-grid,
   .about-band,
@@ -100,32 +99,6 @@
   .button {
     width: 100%;
     max-width: 100%;
-  }
-
-  .metrics {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .metrics article {
-    min-width: 0;
-    border-right: 1px solid var(--line);
-    border-bottom: 0;
-    padding: 18px 10px;
-    text-align: center;
-  }
-
-  .metrics article:last-child {
-    border-right: 0;
-  }
-
-  .metrics strong {
-    font-size: clamp(1.8rem, 11vw, 2.6rem);
-  }
-
-  .metrics span {
-    display: block;
-    font-size: 0.72rem;
-    line-height: 1.25;
   }
 
   .about-grid,
@@ -235,6 +208,10 @@
 
   .project-visual {
     min-height: 560px;
+  }
+
+  .projects-section .section-lede {
+    white-space: normal;
   }
 
   .project-overlay-copy {

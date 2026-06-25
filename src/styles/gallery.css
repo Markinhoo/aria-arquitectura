@@ -12,7 +12,7 @@
 }
 
 .project-card {
-  min-height: 620px;
+  min-height: min(580px, calc(100svh - 370px));
   border: 0;
   background: transparent;
 }
@@ -21,7 +21,7 @@
   position: relative;
   overflow: hidden;
   display: flex;
-  min-height: 620px;
+  min-height: min(580px, calc(100svh - 370px));
   height: 100%;
   aspect-ratio: 3 / 4.35;
   align-items: flex-end;

@@ -327,25 +327,10 @@ function PublicSite() {
           </div>
         </section>
 
-        <section className="metrics" aria-label="Indicadores del estudio">
-          <article>
-            <strong>12+</strong>
-            <span>Años de experiencia</span>
-          </article>
-          <article>
-            <strong>{proyectos.length}</strong>
-            <span>Proyectos en galería</span>
-          </article>
-          <article>
-            <strong>3</strong>
-            <span>Líneas de servicio</span>
-          </article>
-        </section>
-
         <section id="proyectos" className="section projects-section">
           <div className="section-heading">
-            <p className="eyebrow">Proyectos</p>
-            <h2>Espacios con calma, proporcion y caracter.</h2>
+            <h2>Proyectos</h2>
+            <p className="section-lede">Espacios con calma, proporcion y caracter.</p>
           </div>
 
           <div className="project-grid">
@@ -418,8 +403,8 @@ function PublicSite() {
 
         <section id="servicios" className="section services-section">
           <div className="section-heading">
-            <p className="eyebrow">Servicios</p>
-            <h2>Del trazo inicial al espacio terminado.</h2>
+            <h2>Servicios</h2>
+            <p className="section-lede">Del trazo inicial al espacio terminado.</p>
           </div>
 
           <div className="service-grid">
@@ -450,8 +435,8 @@ function PublicSite() {
 
         <section id="contacto" className="section contact-section">
           <div className="contact-copy">
-            <p className="eyebrow">Contacto</p>
-            <h2>Cuéntanos que quieres construir.</h2>
+            <h2>Contacto</h2>
+            <p className="section-lede">Cuéntanos que quieres construir.</p>
             <p>
               Agenda una primera conversación para revisar alcance, ubicación, presupuesto y tiempos del proyecto.
             </p>
