@@ -11,11 +11,13 @@ import {
   FaLayerGroup,
   FaLocationDot,
   FaLock,
+  FaMoon,
   FaPhone,
   FaImages,
   FaPlus,
   FaRulerCombined,
   FaRightFromBracket,
+  FaSun,
   FaUpload,
   FaWhatsapp
 } from 'react-icons/fa6';
@@ -145,6 +147,11 @@ function PublicSite() {
   const [proyectos, setProyectos] = useState(proyectosBase);
   const [activeSlides, setActiveSlides] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    const storedTheme = window.localStorage.getItem('aria-theme');
+    if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
   useEffect(() => {
     let active = true;
@@ -178,6 +185,12 @@ function PublicSite() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    window.localStorage.setItem('aria-theme', theme);
+  }, [theme]);
 
   const whatsappUrl = useMemo(() => {
     const text = `Hola Aria Arquitectura, me gustaria platicar sobre un proyecto ${form.tipo_proyecto.toLowerCase()}.`;
@@ -249,18 +262,29 @@ function PublicSite() {
     <div className="site-shell">
       <header className="topbar">
         <a className="brand" href="#inicio" aria-label="Aria Arquitectura inicio">
-          <span className="brand-mark">A</span>
+          <img className="brand-logo" src="/brand/aria-logo.png" alt="" />
           <span>
             <strong>Aria Arquitectura</strong>
             <small>Arquitectura + interiorismo</small>
           </span>
         </a>
 
-        <nav className="nav-links" aria-label="Navegacion principal">
-          <a href="#proyectos">Proyectos</a>
-          <a href="#servicios">Servicios</a>
-          <a href="#contacto">Contacto</a>
-        </nav>
+        <div className="topbar-actions">
+          <nav className="nav-links" aria-label="Navegacion principal">
+            <a href="#proyectos">Proyectos</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#contacto">Contacto</a>
+          </nav>
+
+          <button
+            className="theme-toggle"
+            type="button"
+            aria-label={theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
+            onClick={() => setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'))}
+          >
+            {theme === 'dark' ? <FaSun aria-hidden="true" /> : <FaMoon aria-hidden="true" />}
+          </button>
+        </div>
       </header>
 
       <main>
@@ -481,16 +505,16 @@ function PublicSite() {
       </footer>
 
       <div className="floating-actions" aria-label="Acciones rapidas">
-        {showScrollTop && (
-          <button
-            className="floating-button scroll-top-button"
-            type="button"
-            aria-label="Volver arriba"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          >
-            <FaArrowUp aria-hidden="true" />
-          </button>
-        )}
+        <button
+          className={`floating-button scroll-top-button ${showScrollTop ? 'is-visible' : ''}`}
+          type="button"
+          aria-label="Volver arriba"
+          aria-hidden={!showScrollTop}
+          tabIndex={showScrollTop ? 0 : -1}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <FaArrowUp aria-hidden="true" />
+        </button>
         <a
           className="floating-button whatsapp-floating"
           href={whatsappUrl}
@@ -558,7 +582,7 @@ function AdminShell({ children }) {
     <div className="admin-shell">
       <header className="admin-topbar">
         <a className="brand admin-brand" href="/">
-          <span className="brand-mark">A</span>
+          <img className="brand-logo" src="/brand/aria-logo.png" alt="" />
           <span>
             <strong>Aria Arquitectura</strong>
             <small>Panel administrativo</small>

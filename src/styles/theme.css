@@ -1,0 +1,66 @@
+:root {
+  --page-bg: #f8f4ed;
+  --page-bg-soft: #ece5db;
+  --surface: #fffaf2;
+  --surface-muted: #efe8de;
+  --text: #211c18;
+  --text-muted: #665a50;
+  --text-soft: #8a7768;
+  --accent: #a3643f;
+  --accent-soft: #d7b28c;
+  --ink: #2f3838;
+  --footer-bg: #211c18;
+  --on-dark: #fffaf2;
+  --line: rgba(33, 28, 24, 0.12);
+  --field-bg: #fffaf2;
+  --shadow: rgba(33, 28, 24, 0.26);
+}
+
+:root[data-theme='dark'] {
+  --page-bg: #171513;
+  --page-bg-soft: #221f1c;
+  --surface: #211d19;
+  --surface-muted: #2b2520;
+  --text: #fffaf2;
+  --text-muted: rgba(255, 250, 242, 0.72);
+  --text-soft: rgba(255, 250, 242, 0.58);
+  --accent: #c08355;
+  --accent-soft: #e1bd95;
+  --ink: #111413;
+  --footer-bg: #0d0c0b;
+  --on-dark: #fffaf2;
+  --line: rgba(255, 250, 242, 0.14);
+  --field-bg: #181614;
+  --shadow: rgba(0, 0, 0, 0.38);
+}
+
+body {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--page-bg) 92%, transparent), color-mix(in srgb, var(--page-bg-soft) 75%, transparent)),
+    var(--page-bg);
+  color: var(--text);
+}
+
+body,
+.metrics,
+.services-section,
+.contact-section,
+.service-card,
+.contact-form,
+.admin-shell,
+.admin-card,
+.admin-empty,
+.message-item,
+.admin-project-item,
+.admin-form input,
+.admin-form select,
+.admin-form textarea,
+.admin-login-card input,
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease;
+}

@@ -1,0 +1,163 @@
+.contact-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1.15fr);
+  gap: clamp(28px, 6vw, 90px);
+  background: var(--surface);
+}
+
+.contact-copy {
+  max-width: 580px;
+}
+
+.contact-copy h2 {
+  margin-bottom: 24px;
+}
+
+.contact-methods {
+  display: grid;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.contact-methods a,
+.contact-methods span {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text);
+}
+
+.contact-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: clamp(20px, 4vw, 34px);
+  background: var(--surface-muted);
+}
+
+.contact-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid rgba(33, 28, 24, 0.14);
+  border-radius: 0;
+  padding: 13px 14px;
+  color: var(--text);
+  background: var(--field-bg);
+  outline: none;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  border-color: #a3643f;
+  box-shadow: 0 0 0 3px rgba(163, 100, 63, 0.16);
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.form-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 12px 14px;
+  line-height: 1.5;
+  background: var(--surface);
+}
+
+.form-status.success {
+  color: #256044;
+}
+
+.form-status.error {
+  color: #9c2f2f;
+}
+
+.form-status.info {
+  color: #65522e;
+}
+
+.contact-form .button {
+  border: 0;
+}
+
+.contact-form .button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  transform: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px clamp(20px, 5vw, 72px);
+  color: rgba(255, 250, 242, 0.76);
+  background: var(--footer-bg);
+}
+
+.floating-actions {
+  position: fixed;
+  z-index: 25;
+  right: clamp(16px, 3vw, 28px);
+  bottom: clamp(16px, 3vw, 28px);
+  display: grid;
+  gap: 10px;
+}
+
+.floating-button {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1px solid rgba(255, 250, 242, 0.2);
+  color: #fffaf2;
+  background: #2f3838;
+  box-shadow: 0 18px 40px var(--shadow);
+  cursor: pointer;
+  transition:
+    opacity 220ms ease,
+    background 180ms ease,
+    transform 220ms ease;
+}
+
+.floating-button svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.whatsapp-floating svg {
+  width: 1.55rem;
+  height: 1.55rem;
+}
+
+.floating-button:hover {
+  background: #a3643f;
+  transform: translateY(-2px);
+}
+
+.whatsapp-floating {
+  background: #3d352f;
+}
+
+.scroll-top-button {
+  background: #a3643f;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+.scroll-top-button.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}

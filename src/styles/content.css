@@ -1,0 +1,56 @@
+.service-card p,
+.contact-copy p {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.services-section {
+  background: var(--page-bg-soft);
+}
+
+.service-card {
+  min-height: 280px;
+  padding: 26px;
+}
+
+.service-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  margin-bottom: 34px;
+  color: #fffaf2;
+  background: var(--ink);
+}
+
+.process-band {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+  padding: clamp(64px, 8vw, 108px) clamp(20px, 5vw, 72px);
+  color: #fffaf2;
+  background: #2f3838;
+}
+
+.process-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: rgba(255, 250, 242, 0.18);
+}
+
+.process-list li {
+  min-height: 145px;
+  padding: 18px;
+  background: #2f3838;
+}
+
+.process-list span {
+  display: block;
+  margin-bottom: 38px;
+  color: #d7b28c;
+}
