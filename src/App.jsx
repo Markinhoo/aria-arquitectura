@@ -442,7 +442,6 @@ function PublicSite() {
           <div className="about-grid">
             {pilaresAria.map((pilar, index) => (
               <article className="about-item" key={pilar.titulo}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
                 <h3>{pilar.titulo}</h3>
                 <p>{pilar.texto}</p>
               </article>

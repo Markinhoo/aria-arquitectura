@@ -26,7 +26,7 @@
 .about-band {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(420px, 0.95fr) minmax(0, 1.05fr);
   gap: clamp(24px, 5vw, 72px);
   align-items: start;
   padding: clamp(64px, 8vw, 108px) clamp(20px, 5vw, 72px);
@@ -40,8 +40,9 @@
 
 .about-heading img {
   display: block;
-  width: min(360px, 100%);
-  margin-top: 28px;
+  width: 100%;
+  max-width: 620px;
+  margin-top: 34px;
   background: #050505;
 }
 
@@ -58,13 +59,6 @@
   min-height: 245px;
   padding: clamp(20px, 3vw, 28px);
   background: var(--ink);
-}
-
-.about-item span {
-  display: block;
-  margin-bottom: 34px;
-  color: var(--accent-soft);
-  font-weight: 800;
 }
 
 .about-item h3 {
