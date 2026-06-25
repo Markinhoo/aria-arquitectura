@@ -38,5 +38,7 @@
 }
 
 .projects-section .section-lede {
+  justify-self: center;
+  text-align: center;
   white-space: nowrap;
 }

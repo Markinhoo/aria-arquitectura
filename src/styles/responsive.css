@@ -11,6 +11,7 @@
   .hero {
     min-height: 88vh;
     padding-top: 120px;
+    background: #1e1b18;
   }
 
   .section,
@@ -203,11 +204,14 @@
   }
 
   .project-card {
+    height: auto;
     min-height: auto;
   }
 
   .project-visual {
+    height: auto;
     min-height: 560px;
+    aspect-ratio: 3 / 4.35;
   }
 
   .projects-section .section-lede {

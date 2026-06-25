@@ -138,6 +138,9 @@ textarea {
   align-items: end;
   padding: 138px clamp(20px, 5vw, 72px) 86px;
   color: #fffaf2;
+  background:
+    url('/aria-hero.png') center / cover fixed no-repeat,
+    #1e1b18;
   scroll-margin-top: 0;
 }
 
@@ -159,6 +162,12 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media (min-width: 901px) {
+  .hero-media {
+    display: none;
+  }
 }
 
 .hero-content {

@@ -3,6 +3,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
+  align-items: start;
 }
 
 .project-card,
@@ -12,7 +13,8 @@
 }
 
 .project-card {
-  min-height: min(580px, calc(100svh - 370px));
+  height: clamp(380px, 58svh, 520px);
+  min-height: 0;
   border: 0;
   background: transparent;
 }
@@ -21,9 +23,9 @@
   position: relative;
   overflow: hidden;
   display: flex;
-  min-height: min(580px, calc(100svh - 370px));
+  min-height: 0;
   height: 100%;
-  aspect-ratio: 3 / 4.35;
+  aspect-ratio: auto;
   align-items: flex-end;
   padding: 18px;
   color: #fffaf2;
