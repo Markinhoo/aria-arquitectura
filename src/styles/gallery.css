@@ -13,7 +13,9 @@
 }
 
 .project-card {
-  height: clamp(380px, 58svh, 520px);
+  width: min(100%, clamp(270px, 28vw, 360px));
+  aspect-ratio: 3 / 4.35;
+  justify-self: start;
   min-height: 0;
   border: 0;
   background: transparent;
@@ -25,7 +27,7 @@
   display: flex;
   min-height: 0;
   height: 100%;
-  aspect-ratio: auto;
+  aspect-ratio: inherit;
   align-items: flex-end;
   padding: 18px;
   color: #fffaf2;
