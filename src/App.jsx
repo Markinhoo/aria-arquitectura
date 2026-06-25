@@ -344,7 +344,7 @@ function PublicSite() {
 
         <section id="proyectos" className="section projects-section">
           <div className="section-heading">
-            <p className="eyebrow">Portafolio</p>
+            <p className="eyebrow">Proyectos</p>
             <h2>Espacios con calma, proporcion y caracter.</h2>
           </div>
 
@@ -435,7 +435,6 @@ function PublicSite() {
 
         <section id="nosotros" className="about-band">
           <div className="about-heading">
-            <p className="eyebrow">ARIA</p>
             <h2>Nosotros</h2>
             <img src="/brand/aria-logo.png" alt="Logo de Aria Arquitectura" />
           </div>

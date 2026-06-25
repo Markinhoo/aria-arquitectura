@@ -13,6 +13,12 @@
     padding-top: 120px;
   }
 
+  .section,
+  .contact-section {
+    min-height: auto;
+    align-content: start;
+  }
+
   .metrics,
   .project-grid,
   .service-grid,
@@ -133,6 +139,10 @@
     min-height: 720px;
     overflow: hidden;
     background: #050505;
+  }
+
+  .about-heading {
+    transform: none;
   }
 
   .about-band::before {

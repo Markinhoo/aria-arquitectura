@@ -26,7 +26,11 @@
 }
 
 .section {
+  display: grid;
+  align-content: center;
+  min-height: 100svh;
   padding: clamp(72px, 10vw, 132px) clamp(20px, 5vw, 72px);
+  scroll-margin-top: 0;
 }
 
 .section-heading {
@@ -39,4 +43,15 @@
 .section-heading h2 {
   max-width: 850px;
   color: var(--text);
+}
+
+.projects-section {
+  padding-top: clamp(72px, 6vw, 88px);
+  padding-bottom: clamp(54px, 5vw, 72px);
+}
+
+.projects-section .section-heading h2 {
+  max-width: none;
+  font-size: clamp(2.2rem, 4.2vw, 3.75rem);
+  white-space: nowrap;
 }

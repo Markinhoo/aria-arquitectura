@@ -28,10 +28,16 @@
   display: grid;
   grid-template-columns: minmax(420px, 0.95fr) minmax(0, 1.05fr);
   gap: clamp(24px, 5vw, 72px);
-  align-items: start;
-  padding: clamp(64px, 8vw, 108px) clamp(20px, 5vw, 72px);
+  min-height: 100svh;
+  align-items: center;
+  padding: clamp(84px, 8vw, 118px) clamp(20px, 5vw, 72px) clamp(56px, 6vw, 86px);
   color: #fffaf2;
   background: var(--ink);
+  scroll-margin-top: 0;
+}
+
+.about-heading {
+  transform: translateY(-34px);
 }
 
 .about-heading h2 {
@@ -42,7 +48,7 @@
   display: block;
   width: 100%;
   max-width: 620px;
-  margin-top: 34px;
+  margin-top: 24px;
   background: #050505;
 }
 

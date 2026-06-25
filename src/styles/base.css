@@ -134,10 +134,11 @@ textarea {
 .hero {
   position: relative;
   display: grid;
-  min-height: 92vh;
+  min-height: 100svh;
   align-items: end;
   padding: 138px clamp(20px, 5vw, 72px) 86px;
   color: #fffaf2;
+  scroll-margin-top: 0;
 }
 
 .hero::after {
