@@ -91,6 +91,24 @@ const initialProjectForm = {
 };
 
 function getProjectImages(proyecto) {
+  const images = Array.isArray(proyecto.imagenes_urls) && proyecto.imagenes_urls.length
+    ? proyecto.imagenes_urls
+    : proyecto.imagen_url
+      ? [proyecto.imagen_url]
+      : [];
+
+  if (proyecto.id === '04416a62-2351-4362-b0a4-b6e998d878c0' && images.length > 1) {
+    return [
+      images[0],
+      '/projects/remodelacion-bano-despues.jpeg',
+      ...images.slice(2)
+    ];
+  }
+
+  return images;
+}
+
+function getProjectAdminImages(proyecto) {
   if (Array.isArray(proyecto.imagenes_urls) && proyecto.imagenes_urls.length) {
     return proyecto.imagenes_urls;
   }
@@ -845,11 +863,11 @@ function AdminDashboard({ userEmail }) {
           <div className="admin-project-list">
             {proyectos.length ? proyectos.map((proyecto) => (
               <article className="admin-project-item" key={proyecto.id}>
-                <img src={getProjectImages(proyecto)[0]} alt={proyecto.nombre} />
+                <img src={getProjectAdminImages(proyecto)[0]} alt={proyecto.nombre} />
                 <div>
                   <strong>{proyecto.nombre}</strong>
                   <span>{proyecto.tipo} - {proyecto.lugar}</span>
-                  <small>{getProjectImages(proyecto).length} foto{getProjectImages(proyecto).length === 1 ? '' : 's'}</small>
+                  <small>{getProjectAdminImages(proyecto).length} foto{getProjectAdminImages(proyecto).length === 1 ? '' : 's'}</small>
                 </div>
               </article>
             )) : <p className="admin-muted">Aun no hay proyectos subidos.</p>}
