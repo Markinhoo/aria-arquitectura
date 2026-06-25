@@ -437,6 +437,7 @@ function PublicSite() {
           <div className="about-heading">
             <p className="eyebrow">ARIA</p>
             <h2>Nosotros</h2>
+            <img src="/brand/aria-logo.png" alt="Logo de Aria Arquitectura" />
           </div>
           <div className="about-grid">
             {pilaresAria.map((pilar, index) => (
@@ -519,9 +520,6 @@ function PublicSite() {
         </section>
       </main>
 
-      <section className="brand-representation" aria-label="Representacion visual de Aria Arquitectura">
-        <img src="/brand/aria-logo.png" alt="Logo de Aria Arquitectura" />
-      </section>
       <footer className="footer">
         <strong>Aria Arquitectura</strong>
         <span>Arquitectura residencial, comercial e interiorismo.</span>

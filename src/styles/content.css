@@ -24,6 +24,7 @@
 }
 
 .about-band {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: clamp(24px, 5vw, 72px);
@@ -35,6 +36,13 @@
 
 .about-heading h2 {
   color: #fffaf2;
+}
+
+.about-heading img {
+  display: block;
+  width: min(360px, 100%);
+  margin-top: 28px;
+  background: #050505;
 }
 
 .about-grid {
