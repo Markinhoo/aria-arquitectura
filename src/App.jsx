@@ -74,7 +74,24 @@ const servicios = [
   }
 ];
 
-const etapas = ['Escucha', 'Concepto', 'Proyecto', 'Obra'];
+const pilaresAria = [
+  {
+    titulo: 'Arquitectura',
+    texto: 'La arquitectura es el punto de partida. Cada proyecto nace de una idea que busca transformar el espacio en una experiencia funcional, estética y duradera.'
+  },
+  {
+    titulo: 'Responsabilidad',
+    texto: 'Entendemos que cada obra representa una inversión, un compromiso y un impacto en el entorno. Por ello actuamos con profesionalismo, ética y compromiso en cada etapa del proyecto.'
+  },
+  {
+    titulo: 'Innovación',
+    texto: 'Incorporamos nuevas tecnologías, metodologías y tendencias de diseño para ofrecer soluciones eficientes, sostenibles y adaptadas a las necesidades de cada cliente.'
+  },
+  {
+    titulo: 'Armonía',
+    texto: 'Creemos que un buen diseño surge del equilibrio entre la funcionalidad, la estética, el contexto y las personas que habitarán el espacio.'
+  }
+];
 
 const initialForm = {
   nombre: '',
@@ -262,7 +279,7 @@ function PublicSite() {
     <div className="site-shell">
       <header className="topbar">
         <a className="brand" href="#inicio" aria-label="Aria Arquitectura inicio">
-          <img className="brand-logo" src="/brand/aria-logo.png" alt="" />
+          <span className="brand-mark">A</span>
           <span>
             <strong>Aria Arquitectura</strong>
             <small>Arquitectura + interiorismo</small>
@@ -271,8 +288,10 @@ function PublicSite() {
 
         <div className="topbar-actions">
           <nav className="nav-links" aria-label="Navegacion principal">
+            <a href="#inicio">Inicio</a>
             <a href="#proyectos">Proyectos</a>
             <a href="#servicios">Servicios</a>
+            <a href="#nosotros">Nosotros</a>
             <a href="#contacto">Contacto</a>
           </nav>
 
@@ -294,10 +313,10 @@ function PublicSite() {
           </div>
 
           <div className="hero-content">
-            <p className="eyebrow">Estudio de arquitectura en Mexico</p>
-            <h1>Aria Arquitectura</h1>
+            <p className="eyebrow">Arquitectura · Responsabilidad · Innovación · Armonía</p>
+            <h1>ARIA</h1>
             <p className="hero-copy">
-              Diseñamos espacios habitables, sobrios y luminosos, con una ejecucion clara desde la primera idea hasta la obra.
+              "Diseñamos espacios que inspiran, construimos lugares que perduran."
             </p>
 
             <div className="hero-actions">
@@ -315,11 +334,11 @@ function PublicSite() {
           </article>
           <article>
             <strong>{proyectos.length}</strong>
-            <span>Proyectos en galeria</span>
+            <span>Proyectos en galería</span>
           </article>
           <article>
             <strong>3</strong>
-            <span>Lineas de servicio</span>
+            <span>Líneas de servicio</span>
           </article>
         </section>
 
@@ -414,19 +433,20 @@ function PublicSite() {
           </div>
         </section>
 
-        <section className="process-band">
-          <div>
-            <p className="eyebrow">Proceso</p>
-            <h2>Una ruta ordenada para decidir mejor.</h2>
+        <section id="nosotros" className="about-band">
+          <div className="about-heading">
+            <p className="eyebrow">ARIA</p>
+            <h2>Nosotros</h2>
           </div>
-          <ol className="process-list">
-            {etapas.map((etapa, index) => (
-              <li key={etapa}>
+          <div className="about-grid">
+            {pilaresAria.map((pilar, index) => (
+              <article className="about-item" key={pilar.titulo}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong>{etapa}</strong>
-              </li>
+                <h3>{pilar.titulo}</h3>
+                <p>{pilar.texto}</p>
+              </article>
             ))}
-          </ol>
+          </div>
         </section>
 
         <section id="contacto" className="section contact-section">
@@ -434,7 +454,7 @@ function PublicSite() {
             <p className="eyebrow">Contacto</p>
             <h2>Cuéntanos que quieres construir.</h2>
             <p>
-              Agenda una primera conversacion para revisar alcance, ubicacion, presupuesto y tiempos del proyecto.
+              Agenda una primera conversación para revisar alcance, ubicación, presupuesto y tiempos del proyecto.
             </p>
 
             <div className="contact-methods">
@@ -499,6 +519,9 @@ function PublicSite() {
         </section>
       </main>
 
+      <section className="brand-representation" aria-label="Representacion visual de Aria Arquitectura">
+        <img src="/brand/aria-logo.png" alt="Logo de Aria Arquitectura" />
+      </section>
       <footer className="footer">
         <strong>Aria Arquitectura</strong>
         <span>Arquitectura residencial, comercial e interiorismo.</span>
@@ -582,7 +605,7 @@ function AdminShell({ children }) {
     <div className="admin-shell">
       <header className="admin-topbar">
         <a className="brand admin-brand" href="/">
-          <img className="brand-logo" src="/brand/aria-logo.png" alt="" />
+          <span className="brand-mark">A</span>
           <span>
             <strong>Aria Arquitectura</strong>
             <small>Panel administrativo</small>

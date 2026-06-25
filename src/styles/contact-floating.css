@@ -105,6 +105,19 @@
   background: var(--footer-bg);
 }
 
+.brand-representation {
+  display: grid;
+  place-items: center;
+  padding: clamp(54px, 8vw, 96px) clamp(20px, 5vw, 72px);
+  background: #050505;
+}
+
+.brand-representation img {
+  width: min(720px, 100%);
+  height: auto;
+  display: block;
+}
+
 .floating-actions {
   position: fixed;
   z-index: 25;

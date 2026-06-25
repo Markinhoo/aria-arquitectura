@@ -16,14 +16,14 @@
   .metrics,
   .project-grid,
   .service-grid,
-  .process-band,
+  .about-band,
   .contact-section,
   .section-heading,
   .admin-grid {
     grid-template-columns: 1fr;
   }
 
-  .process-list {
+  .about-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -34,13 +34,31 @@
     padding: 16px;
   }
 
-  .brand small,
-  .nav-links {
+  .brand > span:not(.brand-mark) {
     display: none;
   }
 
+  .topbar {
+    gap: 12px;
+    align-items: center;
+  }
+
   .topbar-actions {
+    flex: 1;
+    min-width: 0;
+    justify-content: space-between;
     gap: 10px;
+  }
+
+  .nav-links {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    font-size: 0.78rem;
+    white-space: nowrap;
   }
 
   .theme-toggle {
@@ -49,13 +67,7 @@
   }
 
   .brand {
-    max-width: calc(100vw - 32px);
-  }
-
-  .brand strong {
-    max-width: 210px;
-    font-size: 0.9rem;
-    line-height: 1.15;
+    flex: 0 0 auto;
   }
 
   .hero {
@@ -100,9 +112,13 @@
     line-height: 1.25;
   }
 
-  .process-list,
+  .about-grid,
   .contact-form,
   .admin-form {
+    grid-template-columns: 1fr;
+  }
+
+  .about-band {
     grid-template-columns: 1fr;
   }
 
