@@ -95,10 +95,6 @@ const pilaresAria = [
 
 const filosofiaAria = [
   {
-    titulo: 'Filosofia',
-    texto: 'En ARIA entendemos que la arquitectura no consiste unicamente en construir edificios, sino en crear espacios que mejoren la forma de vivir, trabajar y convivir. Nuestra filosofia integra cuatro principios fundamentales: Arquitectura, Responsabilidad, Innovacion y Armonia, valores que guian cada decision de diseno y cada proyecto que desarrollamos.'
-  },
-  {
     titulo: 'Mision',
     texto: 'Disenar y desarrollar proyectos arquitectonicos que integren funcionalidad, estetica e innovacion, generando espacios de alto valor para nuestros clientes mediante un servicio profesional, responsable y personalizado.'
   },
@@ -390,7 +386,7 @@ function PublicSite() {
             <button className={activePage === 'proyectos' ? 'active' : ''} type="button" onClick={() => navigateToPage('proyectos')}>Proyectos</button>
             <button className={activePage === 'contacto' ? 'active' : ''} type="button" onClick={() => navigateToPage('contacto')}>Contacto</button>
           </nav>
-          <span className="topbar-title">Bienvenidos</span>
+          <span className="topbar-title">Aria Arquitectura</span>
 
           <button
             className="theme-toggle"
@@ -532,8 +528,8 @@ function PublicSite() {
 
         <section className="section philosophy-section">
           <div className="section-heading">
-            <h2>Filosofia</h2>
-            <p className="section-lede">Principios que guian cada decision de diseno.</p>
+            <h2>Mision y Vision</h2>
+            <p className="section-lede">El rumbo profesional que guia cada proyecto.</p>
           </div>
 
           <div className="philosophy-grid">
@@ -562,12 +558,12 @@ function PublicSite() {
                 <FaPhone aria-hidden="true" /> +52 000 000 0000
               </a>
               <span>
-                <FaLocationDot aria-hidden="true" /> Calle Lazaro Cardenas 2207, Durango
+                <FaLocationDot aria-hidden="true" /> Cancer 139, Sahop, Durango
               </span>
               <a href="https://instagram.com" target="_blank" rel="noreferrer">
                 <FaInstagram aria-hidden="true" /> Instagram
               </a>
-              <a href="https://maps.app.goo.gl/A9dq9PeB4ibbch6L8" target="_blank" rel="noreferrer">
+              <a href="https://maps.app.goo.gl/mfGNuPTV8sZBWJ156" target="_blank" rel="noreferrer">
                 <FaLocationDot aria-hidden="true" /> Abrir ubicacion
               </a>
             </div>
@@ -620,7 +616,7 @@ function PublicSite() {
           <div className="contact-map full">
             <iframe
               title="Ubicacion de Aria Arquitectura"
-              src="https://www.google.com/maps?q=Calle%20Lazaro%20Cardenas%202207%20Durango&output=embed"
+              src="https://www.google.com/maps?q=24.0011709,-104.6614576&z=19&output=embed"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
