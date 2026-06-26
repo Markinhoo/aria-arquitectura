@@ -108,6 +108,7 @@
 }
 
 .app-nav {
+  display: none;
   position: fixed;
   z-index: 24;
   right: 0;
@@ -117,7 +118,8 @@
   backdrop-filter: blur(14px);
 }
 
-.app-nav button {
+.app-nav button,
+.app-nav a {
   display: inline-flex;
   min-width: min(29vw, 160px);
   align-items: center;
@@ -136,6 +138,11 @@
   background: rgba(255, 250, 242, 0.1);
 }
 
+.app-nav a {
+  color: #5fe08d;
+  font-weight: 900;
+}
+
 .map-card {
   display: flex;
   min-height: 120px;
@@ -149,6 +156,19 @@
     linear-gradient(135deg, rgba(47, 56, 56, 0.82), rgba(163, 100, 63, 0.74)),
     var(--ink);
   font-weight: 900;
+}
+
+.contact-map {
+  overflow: hidden;
+  min-height: 360px;
+  background: var(--surface-muted);
+}
+
+.contact-map iframe {
+  display: block;
+  width: 100%;
+  height: 360px;
+  border: 0;
 }
 
 .floating-actions {

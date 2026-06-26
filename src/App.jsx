@@ -385,6 +385,11 @@ function PublicSite() {
         </button>
 
         <div className="topbar-actions">
+          <nav className="nav-links" aria-label="Navegacion principal">
+            <button className={activePage === 'inicio' ? 'active' : ''} type="button" onClick={() => navigateToPage('inicio')}>Inicio</button>
+            <button className={activePage === 'proyectos' ? 'active' : ''} type="button" onClick={() => navigateToPage('proyectos')}>Proyectos</button>
+            <button className={activePage === 'contacto' ? 'active' : ''} type="button" onClick={() => navigateToPage('contacto')}>Contacto</button>
+          </nav>
           <span className="topbar-title">Bienvenidos</span>
 
           <button
@@ -541,17 +546,6 @@ function PublicSite() {
           </div>
         </section>
 
-        <section className="section values-section">
-          <div className="section-heading">
-            <h2>Valores</h2>
-            <p className="section-lede">La base profesional y humana de cada proyecto.</p>
-          </div>
-
-          <div className="values-list">
-            {valoresAria.map((valor) => <span key={valor}>{valor}</span>)}
-          </div>
-        </section>
-
         <section id="contacto" className="section contact-section">
           <div className="contact-copy">
             <h2>Contacto</h2>
@@ -577,11 +571,6 @@ function PublicSite() {
                 <FaLocationDot aria-hidden="true" /> Abrir ubicacion
               </a>
             </div>
-
-            <a className="map-card" href="https://maps.app.goo.gl/A9dq9PeB4ibbch6L8" target="_blank" rel="noreferrer">
-              <FaLocationDot aria-hidden="true" />
-              <span>Ver ubicacion en Google Maps</span>
-            </a>
           </div>
 
           <form className="contact-form" onSubmit={handleSubmit}>
@@ -627,6 +616,15 @@ function PublicSite() {
               {sending ? 'Enviando...' : 'Enviar mensaje'} <FaCheck aria-hidden="true" />
             </button>
           </form>
+
+          <div className="contact-map full">
+            <iframe
+              title="Ubicacion de Aria Arquitectura"
+              src="https://www.google.com/maps?q=Calle%20Lazaro%20Cardenas%202207%20Durango&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </section>
       </main>
 
@@ -640,6 +638,9 @@ function PublicSite() {
         <button className={activePage === 'contacto' ? 'active' : ''} type="button" onClick={() => navigateToPage('contacto')}>
           <FaEnvelope aria-hidden="true" /> Contacto
         </button>
+        <a href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="Contactar por WhatsApp">
+          <FaWhatsapp aria-hidden="true" /> WhatsApp
+        </a>
       </footer>
 
       <div className="floating-actions" aria-label="Acciones rapidas">
