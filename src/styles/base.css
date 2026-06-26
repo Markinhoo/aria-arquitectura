@@ -288,3 +288,35 @@ h3 {
   color: #fffaf2;
   background: rgba(255, 250, 242, 0.08);
 }
+
+.home-section-jump {
+  position: fixed;
+  z-index: 19;
+  right: clamp(18px, 4vw, 48px);
+  bottom: clamp(28px, 5vw, 52px);
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(255, 250, 242, 0.28);
+  color: rgba(255, 250, 242, 0.84);
+  background: rgba(20, 18, 16, 0.12);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  animation: homeSectionJump 2.4s ease-in-out infinite;
+}
+
+.home-section-jump:hover {
+  background: rgba(163, 100, 63, 0.34);
+}
+
+@keyframes homeSectionJump {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}

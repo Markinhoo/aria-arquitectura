@@ -294,3 +294,72 @@
   background: #a3643f;
   font-weight: 900;
 }
+
+@media (min-width: 901px) {
+  .page-contacto .contact-section {
+    min-height: 100svh;
+    grid-template-columns: minmax(280px, 0.75fr) minmax(380px, 1fr);
+    gap: clamp(18px, 3vw, 34px);
+    align-content: center;
+    padding-top: clamp(82px, 7vw, 100px);
+    padding-bottom: clamp(18px, 3vw, 30px);
+  }
+
+  .page-contacto .contact-copy h2 {
+    margin-bottom: 14px;
+  }
+
+  .page-contacto .contact-copy p:not(.section-lede) {
+    margin-bottom: 0;
+    line-height: 1.45;
+  }
+
+  .page-contacto .contact-methods {
+    gap: 9px;
+    margin-top: 18px;
+  }
+
+  .page-contacto .contact-form {
+    gap: 10px;
+    padding: clamp(16px, 2vw, 22px);
+  }
+
+  .page-contacto .contact-form input,
+  .page-contacto .contact-form select,
+  .page-contacto .contact-form textarea {
+    padding: 10px 12px;
+  }
+
+  .page-contacto .contact-form textarea {
+    min-height: 76px;
+    resize: vertical;
+  }
+
+  .page-contacto .location-card {
+    grid-template-columns: minmax(0, 1.8fr) minmax(260px, 0.9fr);
+  }
+
+  .page-contacto .location-card .contact-map,
+  .page-contacto .location-card .contact-map iframe {
+    min-height: clamp(180px, 24vh, 230px);
+    height: clamp(180px, 24vh, 230px);
+  }
+
+  .page-contacto .location-copy {
+    padding: clamp(18px, 2.5vw, 28px);
+  }
+
+  .page-contacto .location-copy h2 {
+    margin-bottom: 10px;
+    font-size: clamp(1.8rem, 3vw, 2.7rem);
+  }
+
+  .page-contacto .location-address {
+    margin: 14px 0;
+  }
+
+  .page-contacto .location-copy a {
+    min-height: 46px;
+    padding: 10px 14px;
+  }
+}

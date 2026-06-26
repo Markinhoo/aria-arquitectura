@@ -9,7 +9,7 @@
   }
 
   .hero {
-    min-height: 100svh;
+    min-height: calc(100svh - var(--mobile-nav-space, 0px));
     padding-top: 120px;
     background:
       url('/aria-hero.png') center / cover fixed no-repeat,
@@ -22,7 +22,7 @@
 
   .section,
   .contact-section {
-    min-height: 100svh;
+    min-height: calc(100svh - var(--mobile-nav-space, 0px));
     align-content: start;
   }
 
@@ -41,6 +41,14 @@
 }
 
 @media (max-width: 620px) {
+  :root {
+    --mobile-nav-space: calc(76px + env(safe-area-inset-bottom));
+  }
+
+  .site-shell {
+    padding-bottom: var(--mobile-nav-space, 0px);
+  }
+
   .topbar {
     position: fixed;
     justify-content: center;
@@ -110,17 +118,18 @@
   }
 
   .hero {
-    min-height: 100svh;
-    padding: 112px 18px 56px;
+    min-height: calc(100svh - var(--mobile-nav-space, 0px));
+    padding: 96px 18px 28px;
   }
 
   .section {
-    padding: 96px 18px 42px;
+    min-height: calc(100svh - var(--mobile-nav-space, 0px));
+    padding: 78px 18px 28px;
   }
 
   .projects-section {
     align-content: start;
-    height: 100svh;
+    height: calc(100svh - var(--mobile-nav-space, 0px));
     overflow: hidden;
     padding-top: 92px;
   }
@@ -129,11 +138,11 @@
     height: auto;
     overflow: visible;
     padding-top: 104px;
-    padding-bottom: 110px;
+    padding-bottom: calc(var(--mobile-nav-space, 0px) + 22px);
   }
 
   .services-section {
-    height: 100svh;
+    height: calc(100svh - var(--mobile-nav-space, 0px));
   }
 
   .services-section {
@@ -143,7 +152,7 @@
   .contact-section {
     height: auto;
     overflow: visible;
-    padding-bottom: 78px;
+    padding-bottom: calc(var(--mobile-nav-space, 0px) + 18px);
   }
 
   h1 {
@@ -165,7 +174,7 @@
 
   .about-band {
     grid-template-columns: 1fr;
-    min-height: 100svh;
+    min-height: calc(100svh - var(--mobile-nav-space, 0px));
     overflow: hidden;
     background: #050505;
   }
@@ -307,6 +316,7 @@
   .app-nav {
     display: flex;
     flex-direction: row;
+    min-height: var(--mobile-nav-space, 0px);
     padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
   }
 
@@ -320,7 +330,14 @@
   }
 
   .floating-actions {
-    bottom: 92px;
+    bottom: calc(var(--mobile-nav-space, 0px) + 14px);
+  }
+
+  .home-section-jump {
+    right: 18px;
+    bottom: calc(var(--mobile-nav-space, 0px) + 14px);
+    width: 42px;
+    height: 42px;
   }
 
   .whatsapp-floating {
@@ -428,6 +445,7 @@
 }
 
 @media (max-width: 620px) {
+
   .instagram-viewer-overlay {
     top: 60px;
     bottom: calc(62px + env(safe-area-inset-bottom));

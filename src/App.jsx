@@ -4,6 +4,7 @@ import {
   FaArrowUp,
   FaBuilding,
   FaCheck,
+  FaChevronDown,
   FaChevronLeft,
   FaChevronRight,
   FaEnvelope,
@@ -352,6 +353,18 @@ function PublicSite() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const navigateInicioSection = () => {
+    const sectionIds = ['inicio', 'servicios', 'nosotros', 'mision-vision'];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    const currentY = window.scrollY + window.innerHeight * 0.42;
+    const nextSection = sections.find((section) => section.offsetTop > currentY) || sections[0];
+
+    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const handleProjectTouchStart = (event) => {
     touchStartX.current = event.touches[0].clientX;
   };
@@ -419,6 +432,12 @@ function PublicSite() {
             </div>
           </div>
         </section>
+
+        {activePage === 'inicio' && (
+          <button className="home-section-jump" type="button" onClick={navigateInicioSection} aria-label="Avanzar a la siguiente seccion">
+            <FaChevronDown aria-hidden="true" />
+          </button>
+        )}
 
         <section id="proyectos" className="section projects-section">
           <div className="section-heading">
@@ -579,7 +598,7 @@ function PublicSite() {
           </div>
         </section>
 
-        <section className="section philosophy-section">
+        <section id="mision-vision" className="section philosophy-section">
           <div className="section-heading">
             <h2>Mision y Vision</h2>
             <p className="section-lede">El rumbo profesional que guia cada proyecto.</p>
