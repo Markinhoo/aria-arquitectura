@@ -108,8 +108,7 @@
     padding-top: 92px;
   }
 
-  .services-section,
-  .contact-section {
+  .services-section {
     height: 100svh;
   }
 
@@ -118,7 +117,9 @@
   }
 
   .contact-section {
-    overflow-y: auto;
+    height: auto;
+    overflow: visible;
+    padding-bottom: 78px;
   }
 
   h1 {
@@ -234,12 +235,12 @@
   }
 
   .project-card {
-    width: min(100%, 330px);
-    flex: 0 0 min(88vw, 330px);
+    width: min(100%, 340px);
+    flex: 0 0 min(88vw, 340px);
     height: auto;
     min-height: 0;
     justify-self: center;
-    aspect-ratio: 3 / 4.35;
+    aspect-ratio: 1 / 1;
   }
 
   .project-visual {
@@ -257,6 +258,7 @@
     padding: 0 18px 18px;
     margin: 0 -18px;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     scrollbar-width: none;
   }
 
@@ -276,6 +278,7 @@
     padding: 0 18px 18px;
     margin: 0 -18px;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     scrollbar-width: none;
   }
 
@@ -284,8 +287,33 @@
   }
 
   .service-card {
-    flex: 0 0 min(82vw, 310px);
+    flex: 0 0 min(78vw, 300px);
+    min-height: 360px;
     scroll-snap-align: center;
+  }
+
+  .contact-section .section-lede {
+    margin-bottom: 10px;
+  }
+
+  .contact-copy p:not(.section-lede) {
+    margin-bottom: 0;
+  }
+
+  .contact-methods {
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .contact-form {
+    gap: 12px;
+    padding: 18px;
+  }
+
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    padding: 11px 12px;
   }
 
   .projects-section .section-lede {

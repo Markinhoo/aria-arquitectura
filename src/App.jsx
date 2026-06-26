@@ -165,6 +165,8 @@ function PublicSite() {
   const [activeSlides, setActiveSlides] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false);
   const touchStartX = useRef(null);
+  const serviceGridRef = useRef(null);
+  const serviceAutoPaused = useRef(false);
   const [theme, setTheme] = useState(() => {
     const storedTheme = window.localStorage.getItem('aria-theme');
     if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
@@ -209,6 +211,30 @@ function PublicSite() {
     document.documentElement.style.colorScheme = theme;
     window.localStorage.setItem('aria-theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      const grid = serviceGridRef.current;
+      if (!grid || serviceAutoPaused.current || !window.matchMedia('(max-width: 620px)').matches) return;
+
+      const cards = Array.from(grid.children);
+      if (cards.length < 2) return;
+
+      const currentIndex = cards.reduce((closestIndex, card, index) => {
+        const currentDistance = Math.abs(card.offsetLeft - grid.scrollLeft);
+        const closestDistance = Math.abs(cards[closestIndex].offsetLeft - grid.scrollLeft);
+        return currentDistance < closestDistance ? index : closestIndex;
+      }, 0);
+      const nextIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
+
+      grid.scrollTo({
+        left: cards[nextIndex].offsetLeft,
+        behavior: 'smooth'
+      });
+    }, 3200);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   const whatsappUrl = useMemo(() => {
     const text = `Hola Aria Arquitectura, me gustaria platicar sobre un proyecto ${form.tipo_proyecto.toLowerCase()}.`;
@@ -427,7 +453,14 @@ function PublicSite() {
             <p className="section-lede">Del trazo inicial al espacio terminado.</p>
           </div>
 
-          <div className="service-grid">
+          <div
+            className="service-grid"
+            ref={serviceGridRef}
+            onMouseEnter={() => { serviceAutoPaused.current = true; }}
+            onMouseLeave={() => { serviceAutoPaused.current = false; }}
+            onTouchStart={() => { serviceAutoPaused.current = true; }}
+            onTouchEnd={() => { serviceAutoPaused.current = false; }}
+          >
             {servicios.map((servicio) => (
               <article className="service-card" key={servicio.titulo}>
                 <div className="service-icon">{servicio.icono}</div>
