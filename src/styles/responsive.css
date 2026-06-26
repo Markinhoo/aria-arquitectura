@@ -425,3 +425,47 @@
     height: 280px;
   }
 }
+
+@media (max-width: 620px) {
+  .instagram-viewer-overlay {
+    top: 60px;
+    bottom: calc(62px + env(safe-area-inset-bottom));
+    z-index: 4000;
+  }
+
+  .instagram-feed-header {
+    min-height: 52px;
+    padding: 6px 10px;
+  }
+
+  .instagram-post-viewer {
+    width: 100%;
+  }
+
+  .instagram-media-slide {
+    min-height: 52vh;
+  }
+
+  .instagram-media-nav {
+    display: none;
+  }
+
+  .location-card {
+    grid-template-columns: 1fr;
+    border-radius: 18px;
+  }
+
+  .location-card .contact-map,
+  .location-card .contact-map iframe {
+    min-height: 300px;
+    height: 300px;
+  }
+
+  .location-copy {
+    padding: 28px 22px;
+  }
+
+  .location-copy a {
+    width: 100%;
+  }
+}

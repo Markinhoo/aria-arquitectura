@@ -444,47 +444,100 @@ function PublicSite() {
             })}
           </div>
 
-          {selectedProject && (() => {
-            const projectKey = selectedProject.id || selectedProject.nombre;
-            const images = getProjectImages(selectedProject);
-            const activeIndex = Math.min(activeSlides[projectKey] || 0, Math.max(images.length - 1, 0));
-
-            return (
-              <article className="project-expanded">
-                <div
-                  className="project-expanded-media"
-                  onTouchStart={handleProjectTouchStart}
-                  onTouchEnd={(event) => handleProjectTouchEnd(event, projectKey, images.length)}
+          {selectedProject && (
+            <div className="instagram-viewer-overlay" role="dialog" aria-modal="true">
+              <header className="instagram-feed-header">
+                <button
+                  type="button"
+                  className="instagram-feed-back"
+                  onClick={() => setSelectedProjectIndex(null)}
+                  aria-label="Regresar a la galeria"
                 >
-                  {images[activeIndex] ? (
-                    <img src={images[activeIndex]} alt={`${selectedProject.nombre} - ${getPhotoLabel(activeIndex)}`} />
-                  ) : null}
-                  {images.length > 1 && <small><FaImages aria-hidden="true" /> {activeIndex + 1}/{images.length}</small>}
+                  <FaChevronLeft aria-hidden="true" />
+                </button>
+                <div>
+                  <strong>Aria Arquitectura</strong>
+                  <span>Proyectos</span>
                 </div>
+                <span className="instagram-feed-header-spacer" aria-hidden="true" />
+              </header>
 
-                <div className="project-expanded-copy">
-                  <button className="project-close" type="button" onClick={() => setSelectedProjectIndex(null)}>Cerrar</button>
-                  <h2>{selectedProject.nombre}</h2>
-                  <p>{selectedProject.descripcion}</p>
-                  <span>{selectedProject.lugar} / {selectedProject.tipo}</span>
-                  <div className="project-expanded-actions">
-                    <button type="button" onClick={() => setSelectedProjectIndex((selectedProjectIndex - 1 + proyectos.length) % proyectos.length)}>
-                      <FaChevronLeft aria-hidden="true" /> Proyecto anterior
-                    </button>
-                    <button type="button" onClick={() => setSelectedProjectIndex((selectedProjectIndex + 1) % proyectos.length)}>
-                      Siguiente proyecto <FaChevronRight aria-hidden="true" />
-                    </button>
-                  </div>
-                  {images.length > 1 && (
-                    <div className="project-expanded-actions">
-                      <button type="button" onClick={() => changeProjectSlide(projectKey, images.length, -1)}>Foto anterior</button>
-                      <button type="button" onClick={() => changeProjectSlide(projectKey, images.length, 1)}>Siguiente foto</button>
-                    </div>
-                  )}
-                </div>
-              </article>
-            );
-          })()}
+              <div className="instagram-feed">
+                {[selectedProject, ...proyectos.filter((proyecto) => proyecto !== selectedProject)].map((proyecto) => {
+                  const projectKey = proyecto.id || proyecto.nombre;
+                  const images = getProjectImages(proyecto);
+                  const activeIndex = Math.min(activeSlides[projectKey] || 0, Math.max(images.length - 1, 0));
+
+                  return (
+                    <article className="instagram-post-viewer" key={projectKey}>
+                      <header className="instagram-post-header">
+                        <div>
+                          <strong>Aria Arquitectura</strong>
+                          <span>{proyecto.tipo}</span>
+                        </div>
+                      </header>
+
+                      <div className="instagram-media-shell">
+                        <div
+                          className="instagram-media-carousel"
+                          style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+                          onTouchStart={handleProjectTouchStart}
+                          onTouchEnd={(event) => handleProjectTouchEnd(event, projectKey, images.length)}
+                        >
+                          {images.map((image, imageIndex) => (
+                            <div className="instagram-media-slide" key={`${projectKey}-${image}`}>
+                              <img src={image} alt={`${proyecto.nombre} - ${getPhotoLabel(imageIndex)}`} />
+                            </div>
+                          ))}
+                        </div>
+
+                        {images.length > 1 && (
+                          <>
+                            <button
+                              type="button"
+                              className="instagram-media-nav previous"
+                              onClick={() => changeProjectSlide(projectKey, images.length, -1)}
+                              aria-label="Foto anterior"
+                            >
+                              <FaChevronLeft aria-hidden="true" />
+                            </button>
+                            <button
+                              type="button"
+                              className="instagram-media-nav next"
+                              onClick={() => changeProjectSlide(projectKey, images.length, 1)}
+                              aria-label="Foto siguiente"
+                            >
+                              <FaChevronRight aria-hidden="true" />
+                            </button>
+                          </>
+                        )}
+                      </div>
+
+                      {images.length > 1 && (
+                        <div className="instagram-media-dots">
+                          {images.map((image, imageIndex) => (
+                            <button
+                              type="button"
+                              key={`${projectKey}-dot-${image}`}
+                              className={imageIndex === activeIndex ? 'active' : ''}
+                              onClick={() => setProjectSlide(projectKey, imageIndex)}
+                              aria-label={`Mostrar foto ${imageIndex + 1}`}
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="instagram-post-copy">
+                        <p><strong>{proyecto.nombre}</strong></p>
+                        <p>{proyecto.descripcion}</p>
+                        <time>{proyecto.lugar} / {proyecto.tipo}</time>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </section>
 
         <section id="servicios" className="section services-section">
@@ -613,13 +666,27 @@ function PublicSite() {
             </button>
           </form>
 
-          <div className="contact-map full">
-            <iframe
-              title="Ubicacion de Aria Arquitectura"
-              src="https://www.google.com/maps?q=24.0011709,-104.6614576&z=19&output=embed"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          <div className="location-card full">
+            <div className="contact-map">
+              <iframe
+                title="Ubicacion de Aria Arquitectura"
+                src="https://www.google.com/maps?q=24.0011709,-104.6614576&z=19&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <div className="location-copy">
+              <p className="eyebrow">Visitanos</p>
+              <h2>Ubicacion de ARIA</h2>
+              <p>Encuentra nuestra oficina y abre la ruta desde tu ubicacion para llegar facilmente.</p>
+              <div className="location-address">
+                <span><FaLocationDot aria-hidden="true" /></span>
+                <p><strong>Aria Arquitectura</strong><br />Cancer 139, Sahop<br />Durango, Durango</p>
+              </div>
+              <a href="https://maps.app.goo.gl/mfGNuPTV8sZBWJ156" target="_blank" rel="noreferrer">
+                <FaLocationDot aria-hidden="true" /> Abrir ubicacion en Google Maps
+              </a>
+            </div>
           </div>
         </section>
       </main>
