@@ -98,20 +98,6 @@
   transform: none;
 }
 
-.site-footer {
-  display: flex;
-  justify-content: center;
-  padding: 18px clamp(18px, 4vw, 56px);
-  color: rgba(255, 250, 242, 0.76);
-  background: var(--footer-bg);
-}
-
-.site-footer p {
-  margin: 0;
-  font-size: 0.88rem;
-  letter-spacing: 0.02em;
-}
-
 .app-nav {
   display: none;
   position: fixed;

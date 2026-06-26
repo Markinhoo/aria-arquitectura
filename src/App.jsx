@@ -691,9 +691,6 @@ function PublicSite() {
         </section>
       </main>
 
-      <footer className="site-footer" aria-label="Copyright">
-        <p>&copy; 2026 ARIA. Todos los derechos reservados</p>
-      </footer>
 
       <nav className="app-nav" aria-label="Navegacion principal">
         <button className={activePage === 'inicio' ? 'active' : ''} type="button" onClick={() => navigateToPage('inicio')}>

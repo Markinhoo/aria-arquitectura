@@ -33,7 +33,7 @@ textarea {
 
 .site-shell {
   overflow: hidden;
-  padding-bottom: 82px;
+  padding-bottom: 0;
 }
 
 .topbar {
