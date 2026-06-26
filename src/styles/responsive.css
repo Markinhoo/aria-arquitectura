@@ -9,14 +9,20 @@
   }
 
   .hero {
-    min-height: 88vh;
+    min-height: 100svh;
     padding-top: 120px;
-    background: #1e1b18;
+    background:
+      url('/aria-hero.png') center / cover fixed no-repeat,
+      #1e1b18;
+  }
+
+  .hero-media {
+    display: none;
   }
 
   .section,
   .contact-section {
-    min-height: auto;
+    min-height: 100svh;
     align-content: start;
   }
 
@@ -87,8 +93,32 @@
   }
 
   .hero {
-    min-height: 94vh;
+    min-height: 100svh;
     padding: 112px 18px 56px;
+  }
+
+  .section {
+    padding: 96px 18px 42px;
+  }
+
+  .projects-section {
+    align-content: start;
+    height: 100svh;
+    overflow: hidden;
+    padding-top: 92px;
+  }
+
+  .services-section,
+  .contact-section {
+    height: 100svh;
+  }
+
+  .services-section {
+    overflow: hidden;
+  }
+
+  .contact-section {
+    overflow-y: auto;
   }
 
   h1 {
@@ -110,7 +140,7 @@
 
   .about-band {
     grid-template-columns: 1fr;
-    min-height: 720px;
+    min-height: 100svh;
     overflow: hidden;
     background: #050505;
   }
@@ -204,14 +234,58 @@
   }
 
   .project-card {
+    width: min(100%, 330px);
+    flex: 0 0 min(88vw, 330px);
     height: auto;
-    min-height: auto;
+    min-height: 0;
+    justify-self: center;
+    aspect-ratio: 3 / 4.35;
   }
 
   .project-visual {
-    height: auto;
-    min-height: 560px;
-    aspect-ratio: 3 / 4.35;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: inherit;
+    touch-action: pan-y;
+  }
+
+  .project-grid {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 18px 18px;
+    margin: 0 -18px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .project-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-card {
+    scroll-snap-align: center;
+  }
+
+  .service-grid {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 18px 18px;
+    margin: 0 -18px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .service-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .service-card {
+    flex: 0 0 min(82vw, 310px);
+    scroll-snap-align: center;
   }
 
   .projects-section .section-lede {
@@ -237,8 +311,7 @@
   }
 
   .project-carousel-control {
-    width: 36px;
-    height: 36px;
+    display: none;
   }
 
   .project-stage-label,

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   FaArrowRight,
   FaArrowUp,
@@ -164,6 +164,7 @@ function PublicSite() {
   const [proyectos, setProyectos] = useState(proyectosBase);
   const [activeSlides, setActiveSlides] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const touchStartX = useRef(null);
   const [theme, setTheme] = useState(() => {
     const storedTheme = window.localStorage.getItem('aria-theme');
     if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
@@ -275,6 +276,21 @@ function PublicSite() {
     }));
   };
 
+  const handleProjectTouchStart = (event) => {
+    touchStartX.current = event.touches[0].clientX;
+  };
+
+  const handleProjectTouchEnd = (event, projectKey, total) => {
+    if (touchStartX.current === null || total < 2) return;
+
+    const touchEndX = event.changedTouches[0].clientX;
+    const deltaX = touchEndX - touchStartX.current;
+    touchStartX.current = null;
+
+    if (Math.abs(deltaX) < 42) return;
+    changeProjectSlide(projectKey, total, deltaX < 0 ? 1 : -1);
+  };
+
   return (
     <div className="site-shell">
       <header className="topbar">
@@ -341,7 +357,11 @@ function PublicSite() {
 
               return (
                 <article className={`project-card ${proyecto.color || proyectosBase[index % proyectosBase.length].color}`} key={projectKey}>
-                  <div className="project-visual">
+                  <div
+                    className="project-visual"
+                    onTouchStart={handleProjectTouchStart}
+                    onTouchEnd={(event) => handleProjectTouchEnd(event, projectKey, images.length)}
+                  >
                     {images[activeIndex] ? (
                       <img
                         className="project-carousel-image"
