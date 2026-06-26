@@ -282,7 +282,7 @@ function PublicSite() {
 
   const whatsappUrl = useMemo(() => {
     const text = `Hola Aria Arquitectura, me gustaria platicar sobre un proyecto ${form.tipo_proyecto.toLowerCase()}.`;
-    return `https://wa.me/520000000000?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/526182066391?text=${encodeURIComponent(text)}`;
   }, [form.tipo_proyecto]);
 
   const handleChange = (event) => {
@@ -626,8 +626,8 @@ function PublicSite() {
               <a href="mailto:hola@ariaarquitectura.mx">
                 <FaEnvelope aria-hidden="true" /> hola@ariaarquitectura.mx
               </a>
-              <a href="tel:+520000000000">
-                <FaPhone aria-hidden="true" /> +52 000 000 0000
+              <a href="tel:+526182066391">
+                <FaPhone aria-hidden="true" /> +52 618 206 6391
               </a>
               <span>
                 <FaLocationDot aria-hidden="true" /> Cancer 139, Sahop, Durango
