@@ -334,10 +334,10 @@
   }
 
   .home-section-jump {
-    right: 18px;
+    left: 50%;
     bottom: calc(var(--mobile-nav-space, 0px) + 14px);
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
   }
 
   .whatsapp-floating {

@@ -291,32 +291,38 @@ h3 {
 
 .home-section-jump {
   position: fixed;
-  z-index: 19;
-  right: clamp(18px, 4vw, 48px);
+  z-index: 30;
+  left: 50%;
   bottom: clamp(28px, 5vw, 52px);
   display: grid;
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   place-items: center;
-  border: 1px solid rgba(255, 250, 242, 0.28);
-  color: rgba(255, 250, 242, 0.84);
-  background: rgba(20, 18, 16, 0.12);
+  border: 0;
+  padding: 0;
+  color: rgba(255, 250, 242, 0.88);
+  background: transparent;
   cursor: pointer;
-  backdrop-filter: blur(8px);
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.32));
   animation: homeSectionJump 2.4s ease-in-out infinite;
 }
 
+.home-section-jump svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
 .home-section-jump:hover {
-  background: rgba(163, 100, 63, 0.34);
+  color: #fffaf2;
 }
 
 @keyframes homeSectionJump {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
 
   50% {
-    transform: translateY(-7px);
+    transform: translate(-50%, -7px);
   }
 }
