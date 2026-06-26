@@ -691,7 +691,11 @@ function PublicSite() {
         </section>
       </main>
 
-      <footer className="footer app-nav" aria-label="Navegacion principal">
+      <footer className="site-footer" aria-label="Copyright">
+        <p>&copy; 2026 ARIA. Todos los derechos reservados</p>
+      </footer>
+
+      <nav className="app-nav" aria-label="Navegacion principal">
         <button className={activePage === 'inicio' ? 'active' : ''} type="button" onClick={() => navigateToPage('inicio')}>
           <FaBuilding aria-hidden="true" /> Inicio
         </button>
@@ -704,7 +708,7 @@ function PublicSite() {
         <a href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="Contactar por WhatsApp">
           <FaWhatsapp aria-hidden="true" /> WhatsApp
         </a>
-      </footer>
+      </nav>
 
       <div className="floating-actions" aria-label="Acciones rapidas">
         <button

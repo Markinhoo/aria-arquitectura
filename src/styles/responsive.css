@@ -303,6 +303,10 @@
     grid-template-columns: 1fr;
   }
 
+  .site-footer {
+    display: none;
+  }
+
   .app-nav {
     display: flex;
     flex-direction: row;
