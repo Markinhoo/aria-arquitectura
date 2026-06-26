@@ -208,3 +208,128 @@
   max-width: 92%;
   line-height: 1.55;
 }
+
+.page-proyectos .projects-section {
+  display: block;
+  min-height: 100svh;
+  padding-top: 120px;
+  background: var(--page-bg);
+}
+
+.page-proyectos .section-heading {
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.instagram-tile {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  aspect-ratio: 1 / 1;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  color: #fffaf2;
+  background: var(--ink);
+  cursor: pointer;
+}
+
+.instagram-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.instagram-tile:hover img {
+  transform: scale(1.04);
+}
+
+.instagram-tile small {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  background: rgba(20, 18, 16, 0.58);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.project-expanded {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(20px, 4vw, 46px);
+  margin-top: 42px;
+  padding: clamp(18px, 3vw, 28px);
+  background: var(--surface);
+}
+
+.project-expanded-media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: var(--ink);
+}
+
+.project-expanded-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-expanded-media small {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  color: #fffaf2;
+  background: rgba(20, 18, 16, 0.58);
+  font-weight: 900;
+}
+
+.project-expanded-copy {
+  display: grid;
+  align-content: center;
+  gap: 16px;
+}
+
+.project-expanded-copy h2 {
+  color: var(--text);
+}
+
+.project-expanded-copy p,
+.project-expanded-copy span {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.project-close,
+.project-expanded-actions button {
+  border: 1px solid var(--line);
+  padding: 12px 14px;
+  color: var(--text);
+  background: var(--surface-muted);
+  cursor: pointer;
+}
+
+.project-close {
+  justify-self: start;
+}
+
+.project-expanded-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

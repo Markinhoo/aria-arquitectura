@@ -100,11 +100,55 @@
 
 .footer {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 26px clamp(20px, 5vw, 72px);
+  justify-content: center;
+  gap: 12px;
+  padding: 12px clamp(12px, 3vw, 24px);
   color: rgba(255, 250, 242, 0.76);
   background: var(--footer-bg);
+}
+
+.app-nav {
+  position: fixed;
+  z-index: 24;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid rgba(255, 250, 242, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+.app-nav button {
+  display: inline-flex;
+  min-width: min(29vw, 160px);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  padding: 10px 12px;
+  color: rgba(255, 250, 242, 0.72);
+  background: transparent;
+  cursor: pointer;
+}
+
+.app-nav button.active {
+  border-color: rgba(255, 250, 242, 0.18);
+  color: #fffaf2;
+  background: rgba(255, 250, 242, 0.1);
+}
+
+.map-card {
+  display: flex;
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+  padding: 18px;
+  color: #fffaf2;
+  background:
+    linear-gradient(135deg, rgba(47, 56, 56, 0.82), rgba(163, 100, 63, 0.74)),
+    var(--ink);
+  font-weight: 900;
 }
 
 .floating-actions {

@@ -108,6 +108,13 @@
     padding-top: 92px;
   }
 
+  .page-proyectos .projects-section {
+    height: auto;
+    overflow: visible;
+    padding-top: 104px;
+    padding-bottom: 110px;
+  }
+
   .services-section {
     height: 100svh;
   }
@@ -260,6 +267,39 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     scrollbar-width: none;
+  }
+
+  .instagram-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3px;
+    margin: 0 -18px;
+  }
+
+  .project-expanded {
+    grid-template-columns: 1fr;
+    margin-right: -18px;
+    margin-left: -18px;
+  }
+
+  .philosophy-grid,
+  .values-list {
+    grid-template-columns: 1fr;
+  }
+
+  .app-nav {
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .app-nav button {
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.72rem;
+  }
+
+  .floating-actions {
+    bottom: 92px;
   }
 
   .project-grid::-webkit-scrollbar {

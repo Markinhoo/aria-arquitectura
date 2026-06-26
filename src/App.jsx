@@ -93,6 +93,32 @@ const pilaresAria = [
   }
 ];
 
+const filosofiaAria = [
+  {
+    titulo: 'Filosofia',
+    texto: 'En ARIA entendemos que la arquitectura no consiste unicamente en construir edificios, sino en crear espacios que mejoren la forma de vivir, trabajar y convivir. Nuestra filosofia integra cuatro principios fundamentales: Arquitectura, Responsabilidad, Innovacion y Armonia, valores que guian cada decision de diseno y cada proyecto que desarrollamos.'
+  },
+  {
+    titulo: 'Mision',
+    texto: 'Disenar y desarrollar proyectos arquitectonicos que integren funcionalidad, estetica e innovacion, generando espacios de alto valor para nuestros clientes mediante un servicio profesional, responsable y personalizado.'
+  },
+  {
+    titulo: 'Vision',
+    texto: 'Consolidarnos como un despacho de arquitectura reconocido por la calidad de sus proyectos, la innovacion en sus procesos y el compromiso con el desarrollo de espacios sostenibles que mejoren la calidad de vida de las personas.'
+  }
+];
+
+const valoresAria = [
+  'Responsabilidad',
+  'Honestidad',
+  'Innovacion',
+  'Calidad',
+  'Compromiso',
+  'Creatividad',
+  'Profesionalismo',
+  'Sustentabilidad'
+];
+
 const initialForm = {
   nombre: '',
   email: '',
@@ -163,6 +189,11 @@ function PublicSite() {
   const [sending, setSending] = useState(false);
   const [proyectos, setProyectos] = useState(proyectosBase);
   const [activeSlides, setActiveSlides] = useState({});
+  const [activePage, setActivePage] = useState(() => {
+    const hashPage = window.location.hash.replace('#', '');
+    return ['inicio', 'proyectos', 'contacto'].includes(hashPage) ? hashPage : 'inicio';
+  });
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const touchStartX = useRef(null);
   const serviceGridRef = useRef(null);
@@ -193,6 +224,22 @@ function PublicSite() {
 
     return () => {
       active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hashPage = window.location.hash.replace('#', '');
+      setActivePage(['inicio', 'proyectos', 'contacto'].includes(hashPage) ? hashPage : 'inicio');
+      setSelectedProjectIndex(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
     };
   }, []);
 
@@ -302,6 +349,13 @@ function PublicSite() {
     }));
   };
 
+  const navigateToPage = (page) => {
+    setActivePage(page);
+    setSelectedProjectIndex(null);
+    window.history.pushState(null, '', `#${page}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleProjectTouchStart = (event) => {
     touchStartX.current = event.touches[0].clientX;
   };
@@ -317,25 +371,21 @@ function PublicSite() {
     changeProjectSlide(projectKey, total, deltaX < 0 ? 1 : -1);
   };
 
+  const selectedProject = selectedProjectIndex !== null ? proyectos[selectedProjectIndex] : null;
+
   return (
-    <div className="site-shell">
+    <div className={`site-shell page-${activePage}`}>
       <header className="topbar">
-        <a className="brand" href="#inicio" aria-label="Aria Arquitectura inicio">
+        <button className="brand brand-button" type="button" onClick={() => navigateToPage('inicio')} aria-label="Aria Arquitectura inicio">
           <span className="brand-mark">A</span>
           <span>
             <strong>Aria Arquitectura</strong>
             <small>Arquitectura + interiorismo</small>
           </span>
-        </a>
+        </button>
 
         <div className="topbar-actions">
-          <nav className="nav-links" aria-label="Navegacion principal">
-            <a href="#inicio">Inicio</a>
-            <a href="#proyectos">Proyectos</a>
-            <a href="#servicios">Servicios</a>
-            <a href="#nosotros">Nosotros</a>
-            <a href="#contacto">Contacto</a>
-          </nav>
+          <span className="topbar-title">Bienvenidos</span>
 
           <button
             className="theme-toggle"
@@ -362,9 +412,9 @@ function PublicSite() {
             </p>
 
             <div className="hero-actions">
-              <a className="button primary" href="#contacto">
+              <button className="button primary" type="button" onClick={() => navigateToPage('contacto')}>
                 Iniciar proyecto <FaArrowRight aria-hidden="true" />
-              </a>
+              </button>
             </div>
           </div>
         </section>
@@ -375,76 +425,65 @@ function PublicSite() {
             <p className="section-lede">Espacios con calma, proporcion y caracter.</p>
           </div>
 
-          <div className="project-grid">
+          <div className="instagram-grid">
             {proyectos.map((proyecto, index) => {
-              const projectKey = proyecto.id || proyecto.nombre;
               const images = getProjectImages(proyecto);
-              const activeIndex = Math.min(activeSlides[projectKey] || 0, Math.max(images.length - 1, 0));
-
               return (
-                <article className={`project-card ${proyecto.color || proyectosBase[index % proyectosBase.length].color}`} key={projectKey}>
-                  <div
-                    className="project-visual"
-                    onTouchStart={handleProjectTouchStart}
-                    onTouchEnd={(event) => handleProjectTouchEnd(event, projectKey, images.length)}
-                  >
-                    {images[activeIndex] ? (
-                      <img
-                        className="project-carousel-image"
-                        src={images[activeIndex]}
-                        alt={`${proyecto.nombre} - ${getPhotoLabel(activeIndex)}`}
-                        key={`${projectKey}-${activeIndex}`}
-                      />
-                    ) : null}
-
-                    {images.length > 0 && (
-                      <small className="project-stage-label">{getPhotoLabel(activeIndex)}</small>
-                    )}
-
-                    {images.length > 1 && (
-                      <>
-                        <small className="project-photo-count">
-                          <FaImages aria-hidden="true" /> {activeIndex + 1}/{images.length}
-                        </small>
-                        <button
-                          className="project-carousel-control prev"
-                          type="button"
-                          aria-label={`Ver foto anterior de ${proyecto.nombre}`}
-                          onClick={() => changeProjectSlide(projectKey, images.length, -1)}
-                        >
-                          <FaChevronLeft aria-hidden="true" />
-                        </button>
-                        <button
-                          className="project-carousel-control next"
-                          type="button"
-                          aria-label={`Ver siguiente foto de ${proyecto.nombre}`}
-                          onClick={() => changeProjectSlide(projectKey, images.length, 1)}
-                        >
-                          <FaChevronRight aria-hidden="true" />
-                        </button>
-                        <div className="project-carousel-dots" aria-label={`Fotos de ${proyecto.nombre}`}>
-                          {images.map((image, imageIndex) => (
-                            <button
-                              className={imageIndex === activeIndex ? 'active' : ''}
-                              type="button"
-                              key={image}
-                              aria-label={`Ver ${getPhotoLabel(imageIndex)} de ${proyecto.nombre}`}
-                              onClick={() => setProjectSlide(projectKey, imageIndex)}
-                            />
-                          ))}
-                        </div>
-                      </>
-                    )}
-                    <div className="project-overlay-copy">
-                      <h3>{proyecto.nombre}</h3>
-                      <span>{proyecto.descripcion}</span>
-                      <p>{proyecto.lugar} / {proyecto.tipo}</p>
-                    </div>
-                  </div>
-                </article>
+                <button
+                  className="instagram-tile"
+                  type="button"
+                  key={proyecto.id || proyecto.nombre}
+                  onClick={() => setSelectedProjectIndex(index)}
+                  aria-label={`Abrir proyecto ${proyecto.nombre}`}
+                >
+                  {images[0] ? <img src={images[0]} alt={proyecto.nombre} /> : <span>{proyecto.nombre}</span>}
+                  {images.length > 1 && <small><FaImages aria-hidden="true" /> {images.length}</small>}
+                </button>
               );
             })}
           </div>
+
+          {selectedProject && (() => {
+            const projectKey = selectedProject.id || selectedProject.nombre;
+            const images = getProjectImages(selectedProject);
+            const activeIndex = Math.min(activeSlides[projectKey] || 0, Math.max(images.length - 1, 0));
+
+            return (
+              <article className="project-expanded">
+                <div
+                  className="project-expanded-media"
+                  onTouchStart={handleProjectTouchStart}
+                  onTouchEnd={(event) => handleProjectTouchEnd(event, projectKey, images.length)}
+                >
+                  {images[activeIndex] ? (
+                    <img src={images[activeIndex]} alt={`${selectedProject.nombre} - ${getPhotoLabel(activeIndex)}`} />
+                  ) : null}
+                  {images.length > 1 && <small><FaImages aria-hidden="true" /> {activeIndex + 1}/{images.length}</small>}
+                </div>
+
+                <div className="project-expanded-copy">
+                  <button className="project-close" type="button" onClick={() => setSelectedProjectIndex(null)}>Cerrar</button>
+                  <h2>{selectedProject.nombre}</h2>
+                  <p>{selectedProject.descripcion}</p>
+                  <span>{selectedProject.lugar} / {selectedProject.tipo}</span>
+                  <div className="project-expanded-actions">
+                    <button type="button" onClick={() => setSelectedProjectIndex((selectedProjectIndex - 1 + proyectos.length) % proyectos.length)}>
+                      <FaChevronLeft aria-hidden="true" /> Proyecto anterior
+                    </button>
+                    <button type="button" onClick={() => setSelectedProjectIndex((selectedProjectIndex + 1) % proyectos.length)}>
+                      Siguiente proyecto <FaChevronRight aria-hidden="true" />
+                    </button>
+                  </div>
+                  {images.length > 1 && (
+                    <div className="project-expanded-actions">
+                      <button type="button" onClick={() => changeProjectSlide(projectKey, images.length, -1)}>Foto anterior</button>
+                      <button type="button" onClick={() => changeProjectSlide(projectKey, images.length, 1)}>Siguiente foto</button>
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })()}
         </section>
 
         <section id="servicios" className="section services-section">
@@ -486,6 +525,33 @@ function PublicSite() {
           </div>
         </section>
 
+        <section className="section philosophy-section">
+          <div className="section-heading">
+            <h2>Filosofia</h2>
+            <p className="section-lede">Principios que guian cada decision de diseno.</p>
+          </div>
+
+          <div className="philosophy-grid">
+            {filosofiaAria.map((item) => (
+              <article className="philosophy-card" key={item.titulo}>
+                <h3>{item.titulo}</h3>
+                <p>{item.texto}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section values-section">
+          <div className="section-heading">
+            <h2>Valores</h2>
+            <p className="section-lede">La base profesional y humana de cada proyecto.</p>
+          </div>
+
+          <div className="values-list">
+            {valoresAria.map((valor) => <span key={valor}>{valor}</span>)}
+          </div>
+        </section>
+
         <section id="contacto" className="section contact-section">
           <div className="contact-copy">
             <h2>Contacto</h2>
@@ -502,12 +568,20 @@ function PublicSite() {
                 <FaPhone aria-hidden="true" /> +52 000 000 0000
               </a>
               <span>
-                <FaLocationDot aria-hidden="true" /> Mexico
+                <FaLocationDot aria-hidden="true" /> Calle Lazaro Cardenas 2207, Durango
               </span>
               <a href="https://instagram.com" target="_blank" rel="noreferrer">
                 <FaInstagram aria-hidden="true" /> Instagram
               </a>
+              <a href="https://maps.app.goo.gl/A9dq9PeB4ibbch6L8" target="_blank" rel="noreferrer">
+                <FaLocationDot aria-hidden="true" /> Abrir ubicacion
+              </a>
             </div>
+
+            <a className="map-card" href="https://maps.app.goo.gl/A9dq9PeB4ibbch6L8" target="_blank" rel="noreferrer">
+              <FaLocationDot aria-hidden="true" />
+              <span>Ver ubicacion en Google Maps</span>
+            </a>
           </div>
 
           <form className="contact-form" onSubmit={handleSubmit}>
@@ -556,9 +630,16 @@ function PublicSite() {
         </section>
       </main>
 
-      <footer className="footer">
-        <strong>Aria Arquitectura</strong>
-        <span>Arquitectura residencial, comercial e interiorismo.</span>
+      <footer className="footer app-nav" aria-label="Navegacion principal">
+        <button className={activePage === 'inicio' ? 'active' : ''} type="button" onClick={() => navigateToPage('inicio')}>
+          <FaBuilding aria-hidden="true" /> Inicio
+        </button>
+        <button className={activePage === 'proyectos' ? 'active' : ''} type="button" onClick={() => navigateToPage('proyectos')}>
+          <FaImages aria-hidden="true" /> Proyectos
+        </button>
+        <button className={activePage === 'contacto' ? 'active' : ''} type="button" onClick={() => navigateToPage('contacto')}>
+          <FaEnvelope aria-hidden="true" /> Contacto
+        </button>
       </footer>
 
       <div className="floating-actions" aria-label="Acciones rapidas">
