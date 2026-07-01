@@ -5,6 +5,7 @@ import {
   FaBuilding,
   FaCalculator,
   FaCheck,
+  FaChevronDown,
   FaChevronLeft,
   FaChevronRight,
   FaEnvelope,
