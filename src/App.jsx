@@ -127,13 +127,9 @@ const initialForm = {
   mensaje: ''
 };
 
-const initialProjectForm = {
-  nombre: '',
-  tipo: 'Residencial',
-  lugar: '',
-  descripcion: '',
-  imagenes: []
-};
+
+
+const publicPages = ['inicio', 'proyectos', 'cotizador', 'contacto'];
 const estimateProfiles = {
   residencial: { label: 'Casa habitacion', low: 12500, high: 20500, note: 'Obra nueva con estructura, instalaciones y acabados habitacionales.' },
   remodelacion: { label: 'Remodelacion integral', low: 5200, high: 14500, note: 'Actualizacion de espacios existentes con demoliciones moderadas.' },
@@ -249,11 +245,12 @@ function PublicSite() {
   const [activeSlides, setActiveSlides] = useState({});
   const [activePage, setActivePage] = useState(() => {
     const hashPage = window.location.hash.replace('#', '');
-    return ['inicio', 'proyectos', 'cotizador', 'contacto'].includes(hashPage) ? hashPage : 'inicio';
+    return publicPages.includes(hashPage) ? hashPage : 'inicio';
   });
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const touchStartX = useRef(null);
+  const pageTouchStart = useRef(null);
   const serviceGridRef = useRef(null);
   const serviceAutoPaused = useRef(false);
   const [theme, setTheme] = useState(() => {
@@ -288,7 +285,7 @@ function PublicSite() {
   useEffect(() => {
     const handleHashChange = () => {
       const hashPage = window.location.hash.replace('#', '');
-      setActivePage(['inicio', 'proyectos', 'cotizador', 'contacto'].includes(hashPage) ? hashPage : 'inicio');
+      setActivePage(publicPages.includes(hashPage) ? hashPage : 'inicio');
       setSelectedProjectIndex(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -414,6 +411,38 @@ function PublicSite() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const shouldIgnorePageSwipe = (target) => (
+    target.closest('input, textarea, select, button, a, .instagram-viewer-overlay, .instagram-media-carousel, .service-grid, .quote-chatbot')
+  );
+
+  const handlePageTouchStart = (event) => {
+    if (selectedProject || shouldIgnorePageSwipe(event.target)) return;
+
+    const touch = event.touches[0];
+    pageTouchStart.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handlePageTouchEnd = (event) => {
+    if (!pageTouchStart.current || selectedProject || shouldIgnorePageSwipe(event.target)) {
+      pageTouchStart.current = null;
+      return;
+    }
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - pageTouchStart.current.x;
+    const deltaY = touch.clientY - pageTouchStart.current.y;
+    pageTouchStart.current = null;
+
+    if (Math.abs(deltaX) < 70 || Math.abs(deltaX) < Math.abs(deltaY) * 1.4) return;
+
+    const currentIndex = publicPages.indexOf(activePage);
+    const nextIndex = deltaX < 0
+      ? Math.min(currentIndex + 1, publicPages.length - 1)
+      : Math.max(currentIndex - 1, 0);
+
+    if (nextIndex !== currentIndex) navigateToPage(publicPages[nextIndex]);
+  };
+
   const navigateInicioSection = () => {
     const sectionIds = ['inicio', 'servicios', 'nosotros', 'mision-vision'];
     const sections = sectionIds
@@ -444,7 +473,7 @@ function PublicSite() {
   const selectedProject = selectedProjectIndex !== null ? proyectos[selectedProjectIndex] : null;
 
   return (
-    <div className={`site-shell page-${activePage}`}>
+    <div className={`site-shell page-${activePage}`} onTouchStart={handlePageTouchStart} onTouchEnd={handlePageTouchEnd}>
       <header className="topbar">
         <button className="brand brand-button" type="button" onClick={() => navigateToPage('inicio')} aria-label="Aria Arquitectura inicio">
           <span className="brand-mark">A</span>

@@ -698,3 +698,262 @@
     background: rgba(255, 255, 255, 0.28);
   }
 }
+
+/* Final contact restore and swipe-friendly mobile nav */
+.page-contacto .contact-copy p {
+  max-width: 780px;
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: clamp(0.95rem, 1.2vw, 1.12rem);
+  line-height: 1.45;
+}
+
+@media (min-width: 901px) {
+  .page-contacto .contact-section {
+    height: 100svh;
+    min-height: 100svh;
+    overflow: hidden;
+    grid-template-columns: minmax(360px, 0.92fr) minmax(540px, 1.08fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: clamp(12px, 1.5vw, 18px);
+    align-content: stretch;
+    padding-top: clamp(72px, 5.5vw, 86px);
+    padding-bottom: 14px;
+  }
+
+  .page-contacto .contact-copy {
+    grid-column: 1 / -1;
+    align-self: end;
+  }
+
+  .page-contacto .contact-copy h2 {
+    margin-bottom: 0;
+    font-size: clamp(3.2rem, 5.6vw, 5rem);
+    line-height: 0.95;
+  }
+
+  .page-contacto .contact-copy p {
+    margin-top: 8px;
+  }
+
+  .page-contacto .contact-form,
+  .page-contacto .location-card.full {
+    min-height: 0;
+    align-self: stretch;
+  }
+
+  .page-contacto .contact-form {
+    grid-column: 1;
+    gap: 10px;
+    padding: clamp(18px, 2vw, 24px);
+  }
+
+  .page-contacto .contact-form label {
+    gap: 6px;
+    font-size: 0.86rem;
+  }
+
+  .page-contacto .contact-form input,
+  .page-contacto .contact-form select,
+  .page-contacto .contact-form textarea {
+    padding: 10px 12px;
+  }
+
+  .page-contacto .contact-form textarea {
+    min-height: 112px;
+  }
+
+  .page-contacto .location-card.full {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(230px, 1fr) auto;
+    border-radius: 18px;
+  }
+
+  .page-contacto .location-card .contact-map,
+  .page-contacto .location-card .contact-map iframe {
+    min-height: 230px;
+    height: 100%;
+  }
+
+  .page-contacto .location-copy {
+    display: grid;
+    align-content: center;
+    padding: clamp(20px, 2.4vw, 28px);
+  }
+
+  .page-contacto .location-copy .eyebrow,
+  .page-contacto .location-copy > p:not(.eyebrow) {
+    display: block;
+  }
+
+  .page-contacto .location-copy h2 {
+    margin-bottom: 8px;
+    font-size: clamp(2rem, 3vw, 3rem);
+  }
+
+  .page-contacto .location-copy > p:not(.eyebrow) {
+    line-height: 1.45;
+  }
+
+  .page-contacto .location-address {
+    grid-template-columns: 48px 1fr;
+    gap: 14px;
+    margin: 16px 0 18px;
+  }
+
+  .page-contacto .location-address span {
+    width: 48px;
+    height: 48px;
+  }
+
+  .page-contacto .location-copy a {
+    min-height: 46px;
+    padding: 10px 14px;
+  }
+
+  .page-contacto .contact-methods.full {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    align-self: end;
+    margin-top: 0;
+  }
+
+  .page-contacto .contact-methods.full a {
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 620px) {
+  .page-contacto .contact-section {
+    height: calc(100svh - var(--mobile-nav-space, 0px));
+    min-height: calc(100svh - var(--mobile-nav-space, 0px));
+    overflow: hidden;
+    gap: 8px;
+    padding-top: 62px;
+    padding-bottom: 8px;
+  }
+
+  .page-contacto .contact-copy h2 {
+    font-size: clamp(2.25rem, 11vw, 3rem);
+    line-height: 0.96;
+  }
+
+  .page-contacto .contact-copy p {
+    margin-top: 4px;
+    font-size: 0.78rem;
+    line-height: 1.25;
+  }
+
+  .page-contacto .contact-form {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .page-contacto .contact-form label {
+    gap: 3px;
+    font-size: 0.7rem;
+  }
+
+  .page-contacto .contact-form input,
+  .page-contacto .contact-form select,
+  .page-contacto .contact-form textarea {
+    padding: 7px 8px;
+  }
+
+  .page-contacto .contact-form textarea {
+    height: 46px;
+    min-height: 46px;
+  }
+
+  .page-contacto .contact-form .button {
+    min-height: 36px;
+    padding: 7px 10px;
+  }
+
+  .page-contacto .location-card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    min-height: 0;
+    border-radius: 14px;
+  }
+
+  .page-contacto .location-card .contact-map,
+  .page-contacto .location-card .contact-map iframe {
+    min-height: 132px;
+    height: 100%;
+  }
+
+  .page-contacto .location-copy {
+    padding: 8px 9px;
+    align-content: center;
+  }
+
+  .page-contacto .location-copy .eyebrow,
+  .page-contacto .location-copy > p:not(.eyebrow) {
+    display: none;
+  }
+
+  .page-contacto .location-copy h2 {
+    margin-bottom: 5px;
+    font-size: 1.18rem;
+  }
+
+  .page-contacto .location-address {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 7px;
+    margin: 4px 0 6px;
+  }
+
+  .page-contacto .location-address span {
+    width: 28px;
+    height: 28px;
+  }
+
+  .page-contacto .location-address p {
+    min-width: 0;
+    overflow: visible;
+    font-size: 0.72rem;
+    line-height: 1.25;
+  }
+
+  .page-contacto .location-copy a {
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+  }
+
+  .page-contacto .contact-methods.full a {
+    padding: 8px 5px;
+    font-size: 0.66rem;
+  }
+
+  :root[data-theme='light'] .app-nav,
+  [data-theme='light'] .app-nav {
+    background: rgba(255, 255, 255, 0.7);
+    border-top-color: rgba(33, 28, 24, 0.16);
+    box-shadow: 0 -16px 40px rgba(33, 28, 24, 0.12);
+  }
+
+  :root[data-theme='light'] .app-nav button,
+  :root[data-theme='light'] .app-nav a,
+  [data-theme='light'] .app-nav button,
+  [data-theme='light'] .app-nav a {
+    color: #211c18;
+    mix-blend-mode: normal;
+    text-shadow: none;
+  }
+
+  :root[data-theme='light'] .app-nav button.active,
+  [data-theme='light'] .app-nav button.active {
+    color: #211c18;
+    background: rgba(33, 28, 24, 0.08);
+    border-color: rgba(33, 28, 24, 0.14);
+  }
+
+  :root[data-theme='light'] .app-nav a,
+  [data-theme='light'] .app-nav a {
+    color: #146c43;
+  }
+}
