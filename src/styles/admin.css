@@ -187,3 +187,18 @@
   color: #665a50;
   font-size: 0.9rem;
 }
+.admin-error-panel {
+  display: grid;
+  gap: 10px;
+  border: 1px solid rgba(163, 100, 63, 0.28);
+}
+
+.admin-error-panel strong {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.admin-error-panel p,
+.admin-error-panel small {
+  color: var(--text-muted);
+}

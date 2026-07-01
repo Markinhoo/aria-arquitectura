@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Component, useEffect, useMemo, useRef, useState } from 'react';
 import {
   FaArrowRight,
   FaArrowUp,
@@ -961,6 +961,36 @@ function CostEstimatorChatbot() {
     </aside>
   );
 }
+class AdminErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+
+  componentDidCatch(error, info) {
+    console.error('Admin render error:', error, info);
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <AdminShell>
+          <div className="admin-empty admin-error-panel">
+            <strong>No se pudo cargar el panel.</strong>
+            <p>Actualiza la pagina o vuelve a iniciar sesion.</p>
+            <small>{this.state.error.message}</small>
+          </div>
+        </AdminShell>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 function AdminApp() {
   const [session, setSession] = useState(null);
   const [loadingSession, setLoadingSession] = useState(true);
@@ -971,17 +1001,25 @@ function AdminApp() {
       return undefined;
     }
 
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoadingSession(false);
-    });
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        setSession(data.session);
+      })
+      .catch((error) => {
+        console.error('Admin session error:', error);
+        setSession(null);
+      })
+      .finally(() => {
+        setLoadingSession(false);
+      });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
       setLoadingSession(false);
     });
 
-    return () => listener.subscription.unsubscribe();
+    return () => listener?.subscription?.unsubscribe();
   }, []);
 
   if (!supabaseReady) {
@@ -1006,7 +1044,11 @@ function AdminApp() {
     return <AdminLogin />;
   }
 
-  return <AdminDashboard userEmail={session.user.email} />;
+  return (
+    <AdminErrorBoundary>
+      <AdminDashboard userEmail={session.user.email} />
+    </AdminErrorBoundary>
+  );
 }
 
 function AdminShell({ children }) {
@@ -1092,22 +1134,36 @@ function AdminDashboard({ userEmail }) {
   const [proyectos, setProyectos] = useState([]);
   const [mensajes, setMensajes] = useState([]);
   const [status, setStatus] = useState({ type: 'idle', message: '' });
+  const [adminLoadError, setAdminLoadError] = useState('');
   const [uploading, setUploading] = useState(false);
 
   const cargarAdmin = async () => {
-    const [{ data: proyectosData }, { data: mensajesData }] = await Promise.all([
-      supabase
-        .from('aria_proyectos')
-        .select('id,nombre,tipo,lugar,descripcion,imagen_url,imagenes_urls,publicado,created_at')
-        .order('created_at', { ascending: false }),
-      supabase
-        .from('aria_contactos')
-        .select('id,nombre,email,telefono,tipo_proyecto,mensaje,estado,created_at')
-        .order('created_at', { ascending: false })
-    ]);
+    setAdminLoadError('');
 
-    setProyectos(proyectosData || []);
-    setMensajes(mensajesData || []);
+    try {
+      const [{ data: proyectosData, error: proyectosError }, { data: mensajesData, error: mensajesError }] = await Promise.all([
+        supabase
+          .from('aria_proyectos')
+          .select('id,nombre,tipo,lugar,descripcion,imagen_url,imagenes_urls,publicado,created_at')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('aria_contactos')
+          .select('id,nombre,email,telefono,tipo_proyecto,mensaje,estado,created_at')
+          .order('created_at', { ascending: false })
+      ]);
+
+      if (proyectosError || mensajesError) {
+        throw new Error(proyectosError?.message || mensajesError?.message || 'No se pudo leer la informacion del admin.');
+      }
+
+      setProyectos(proyectosData || []);
+      setMensajes(mensajesData || []);
+    } catch (error) {
+      console.error('Admin data error:', error);
+      setAdminLoadError(error.message || 'No se pudo cargar la informacion del admin.');
+      setProyectos([]);
+      setMensajes([]);
+    }
   };
 
   useEffect(() => {
@@ -1231,6 +1287,14 @@ function AdminDashboard({ userEmail }) {
             <FaRightFromBracket aria-hidden="true" /> Salir
           </button>
         </div>
+
+        {adminLoadError && (
+          <div className="admin-empty admin-error-panel">
+            <strong>No se pudo cargar la informacion del admin.</strong>
+            <p>{adminLoadError}</p>
+            <button className="button admin-secondary" type="button" onClick={cargarAdmin}>Reintentar</button>
+          </div>
+        )}
 
         <section className="admin-grid">
           <form className="admin-card admin-form" onSubmit={handleProjectSubmit}>
