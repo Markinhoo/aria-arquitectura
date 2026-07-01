@@ -3,6 +3,7 @@ import {
   FaArrowRight,
   FaArrowUp,
   FaBuilding,
+  FaCalculator,
   FaCheck,
   FaChevronDown,
   FaChevronLeft,
@@ -13,6 +14,7 @@ import {
   FaLocationDot,
   FaLock,
   FaMoon,
+  FaPaperPlane,
   FaPhone,
   FaImages,
   FaPlus,
@@ -20,7 +22,8 @@ import {
   FaRightFromBracket,
   FaSun,
   FaUpload,
-  FaWhatsapp
+  FaWhatsapp,
+  FaXmark
 } from 'react-icons/fa6';
 import { supabase, supabaseReady } from './lib/supabaseClient';
 
@@ -131,6 +134,64 @@ const initialProjectForm = {
   descripcion: '',
   imagenes: []
 };
+const estimateProfiles = {
+  residencial: { label: 'Casa habitacion', low: 12500, high: 20500, note: 'Obra nueva con estructura, instalaciones y acabados habitacionales.' },
+  remodelacion: { label: 'Remodelacion integral', low: 5200, high: 14500, note: 'Actualizacion de espacios existentes con demoliciones moderadas.' },
+  banoCocina: { label: 'Bano o cocina', low: 9500, high: 22000, note: 'Zonas con instalaciones, recubrimientos, muebles y accesorios.' },
+  comercial: { label: 'Local comercial', low: 11000, high: 19000, note: 'Adecuacion o construccion comercial con imagen, instalaciones y acabados.' },
+  interiorismo: { label: 'Interiorismo', low: 3800, high: 11500, note: 'Acabados, iluminacion, mobiliario fijo y ambientacion interior.' }
+};
+
+const finishLevels = {
+  funcional: { label: 'Funcional', low: 0.88, high: 0.96 },
+  medio: { label: 'Medio', low: 1, high: 1.08 },
+  premium: { label: 'Premium', low: 1.18, high: 1.38 }
+};
+
+const estimateBreakdown = [
+  ['Materiales', 0.52],
+  ['Mano de obra', 0.28],
+  ['Instalaciones y equipo', 0.12],
+  ['Imprevistos', 0.08]
+];
+
+const currencyFormatter = new Intl.NumberFormat('es-MX', {
+  style: 'currency',
+  currency: 'MXN',
+  maximumFractionDigits: 0
+});
+
+function formatCurrency(value) {
+  return currencyFormatter.format(Math.round(value));
+}
+
+function createProjectEstimate(projectType, areaValue, finishLevel) {
+  const profile = estimateProfiles[projectType] || estimateProfiles.residencial;
+  const finish = finishLevels[finishLevel] || finishLevels.medio;
+  const area = Number(areaValue);
+
+  if (!Number.isFinite(area) || area <= 0) return null;
+
+  const low = area * profile.low * finish.low;
+  const high = area * profile.high * finish.high;
+  const designLow = area * 420;
+  const designHigh = area * 850;
+
+  return {
+    area,
+    profile,
+    finish,
+    low,
+    high,
+    designLow,
+    designHigh,
+    breakdown: estimateBreakdown.map(([label, ratio]) => ({
+      label,
+      low: low * ratio,
+      high: high * ratio
+    }))
+  };
+}
 
 function getProjectImages(proyecto) {
   const images = Array.isArray(proyecto.imagenes_urls) && proyecto.imagenes_urls.length
@@ -726,6 +787,8 @@ function PublicSite() {
         </a>
       </nav>
 
+      <CostEstimatorChatbot />
+
       <div className="floating-actions" aria-label="Acciones rapidas">
         <button
           className={`floating-button scroll-top-button ${showScrollTop ? 'is-visible' : ''}`}
@@ -751,6 +814,124 @@ function PublicSite() {
   );
 }
 
+function CostEstimatorChatbot() {
+  const [open, setOpen] = useState(false);
+  const [projectType, setProjectType] = useState('residencial');
+  const [finishLevel, setFinishLevel] = useState('medio');
+  const [area, setArea] = useState('80');
+  const [estimate, setEstimate] = useState(() => createProjectEstimate('residencial', 80, 'medio'));
+  const [error, setError] = useState('');
+
+  const estimateText = estimate
+    ? `Estimacion ARIA: ${estimate.profile.label}, ${estimate.area} m2, acabado ${estimate.finish.label}. Rango preliminar ${formatCurrency(estimate.low)} a ${formatCurrency(estimate.high)} MXN.`
+    : 'Hola Aria Arquitectura, quiero cotizar un proyecto.';
+  const quoteWhatsappUrl = `https://wa.me/526182066391?text=${encodeURIComponent(estimateText)}`;
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const nextEstimate = createProjectEstimate(projectType, area, finishLevel);
+
+    if (!nextEstimate) {
+      setError('Escribe una superficie valida en metros cuadrados.');
+      return;
+    }
+
+    setError('');
+    setEstimate(nextEstimate);
+  };
+
+  return (
+    <aside className={`quote-chatbot ${open ? 'is-open' : ''}`} aria-label="Chat de cotizacion preliminar">
+      {open && (
+        <div className="quote-chatbot-panel" role="dialog" aria-modal="false" aria-label="Estimador de costos ARIA">
+          <header className="quote-chatbot-header">
+            <div>
+              <span><FaCalculator aria-hidden="true" /></span>
+              <div>
+                <strong>Estimador ARIA</strong>
+                <small>Costos preliminares en Durango</small>
+              </div>
+            </div>
+            <button type="button" onClick={() => setOpen(false)} aria-label="Cerrar estimador">
+              <FaXmark aria-hidden="true" />
+            </button>
+          </header>
+
+          <div className="quote-chatbot-body">
+            <div className="chat-bubble bot">
+              Hola. Te ayudo a calcular un rango inicial segun metros cuadrados, tipo de proyecto y acabados.
+            </div>
+
+            <form className="quote-chatbot-form" onSubmit={handleSubmit}>
+              <label>
+                Tipo de proyecto
+                <select value={projectType} onChange={(event) => setProjectType(event.target.value)}>
+                  {Object.entries(estimateProfiles).map(([key, profile]) => (
+                    <option value={key} key={key}>{profile.label}</option>
+                  ))}
+                </select>
+              </label>
+
+              <label>
+                Metros cuadrados
+                <input value={area} onChange={(event) => setArea(event.target.value)} inputMode="decimal" placeholder="Ej. 80" />
+              </label>
+
+              <label>
+                Nivel de acabados
+                <select value={finishLevel} onChange={(event) => setFinishLevel(event.target.value)}>
+                  {Object.entries(finishLevels).map(([key, finish]) => (
+                    <option value={key} key={key}>{finish.label}</option>
+                  ))}
+                </select>
+              </label>
+
+              {error && <p className="quote-chatbot-error">{error}</p>}
+
+              <button className="quote-chatbot-submit" type="submit">
+                Calcular estimado <FaPaperPlane aria-hidden="true" />
+              </button>
+            </form>
+
+            {estimate && (
+              <div className="chat-bubble bot estimate-result">
+                <p><strong>{formatCurrency(estimate.low)} - {formatCurrency(estimate.high)}</strong></p>
+                <span>Rango preliminar para {estimate.area} m2 con acabado {estimate.finish.label.toLowerCase()}.</span>
+                <ul>
+                  {estimate.breakdown.map((item) => (
+                    <li key={item.label}>
+                      <span>{item.label}</span>
+                      <strong>{formatCurrency(item.low)} - {formatCurrency(item.high)}</strong>
+                    </li>
+                  ))}
+                </ul>
+                <small>
+                  No incluye terreno, permisos especiales, estudios, muebles sueltos ni variaciones por estructura existente. Proyecto arquitectonico estimado aparte: {formatCurrency(estimate.designLow)} - {formatCurrency(estimate.designHigh)}.
+                </small>
+              </div>
+            )}
+          </div>
+
+          <footer className="quote-chatbot-footer">
+            <a href={quoteWhatsappUrl} target="_blank" rel="noreferrer">
+              Enviar estimado por WhatsApp <FaWhatsapp aria-hidden="true" />
+            </a>
+          </footer>
+        </div>
+      )}
+
+      <button
+        className="quote-chatbot-toggle"
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        aria-expanded={open}
+        aria-label={open ? 'Cerrar estimador de costos' : 'Abrir estimador de costos'}
+      >
+        {open ? <FaXmark aria-hidden="true" /> : <FaCalculator aria-hidden="true" />}
+      </button>
+    </aside>
+  );
+}
 function AdminApp() {
   const [session, setSession] = useState(null);
   const [loadingSession, setLoadingSession] = useState(true);
