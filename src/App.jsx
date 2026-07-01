@@ -249,7 +249,7 @@ function PublicSite() {
   const [activeSlides, setActiveSlides] = useState({});
   const [activePage, setActivePage] = useState(() => {
     const hashPage = window.location.hash.replace('#', '');
-    return ['inicio', 'proyectos', 'contacto'].includes(hashPage) ? hashPage : 'inicio';
+    return ['inicio', 'proyectos', 'cotizador', 'contacto'].includes(hashPage) ? hashPage : 'inicio';
   });
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -288,7 +288,7 @@ function PublicSite() {
   useEffect(() => {
     const handleHashChange = () => {
       const hashPage = window.location.hash.replace('#', '');
-      setActivePage(['inicio', 'proyectos', 'contacto'].includes(hashPage) ? hashPage : 'inicio');
+      setActivePage(['inicio', 'proyectos', 'cotizador', 'contacto'].includes(hashPage) ? hashPage : 'inicio');
       setSelectedProjectIndex(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -458,6 +458,7 @@ function PublicSite() {
           <nav className="nav-links" aria-label="Navegacion principal">
             <button className={activePage === 'inicio' ? 'active' : ''} type="button" onClick={() => navigateToPage('inicio')}>Inicio</button>
             <button className={activePage === 'proyectos' ? 'active' : ''} type="button" onClick={() => navigateToPage('proyectos')}>Proyectos</button>
+            <button className={activePage === 'cotizador' ? 'active' : ''} type="button" onClick={() => navigateToPage('cotizador')}>Cotizador</button>
             <button className={activePage === 'contacto' ? 'active' : ''} type="button" onClick={() => navigateToPage('contacto')}>Contacto</button>
           </nav>
           <span className="topbar-title">Aria Arquitectura</span>
@@ -675,6 +676,14 @@ function PublicSite() {
           </div>
         </section>
 
+        <section id="cotizador" className="section quote-section">
+          <div className="section-heading">
+            <h2>Cotizador</h2>
+            <p className="section-lede">Calcula un rango preliminar para tu proyecto en Durango.</p>
+          </div>
+          <CostEstimatorChatbot />
+        </section>
+
         <section id="contacto" className="section contact-section">
           <div className="contact-copy">
             <h2>Contacto</h2>
@@ -779,6 +788,9 @@ function PublicSite() {
         <button className={activePage === 'proyectos' ? 'active' : ''} type="button" onClick={() => navigateToPage('proyectos')}>
           <FaImages aria-hidden="true" /> Proyectos
         </button>
+        <button className={activePage === 'cotizador' ? 'active' : ''} type="button" onClick={() => navigateToPage('cotizador')}>
+          <FaCalculator aria-hidden="true" /> Cotizador
+        </button>
         <button className={activePage === 'contacto' ? 'active' : ''} type="button" onClick={() => navigateToPage('contacto')}>
           <FaEnvelope aria-hidden="true" /> Contacto
         </button>
@@ -786,8 +798,6 @@ function PublicSite() {
           <FaWhatsapp aria-hidden="true" /> WhatsApp
         </a>
       </nav>
-
-      <CostEstimatorChatbot />
 
       <div className="floating-actions" aria-label="Acciones rapidas">
         <button
@@ -815,7 +825,7 @@ function PublicSite() {
 }
 
 function CostEstimatorChatbot() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [projectType, setProjectType] = useState('residencial');
   const [finishLevel, setFinishLevel] = useState('medio');
   const [area, setArea] = useState('80');
