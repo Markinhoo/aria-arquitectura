@@ -957,3 +957,118 @@
     color: #146c43;
   }
 }
+/* Mobile contact form breathing room */
+@media (max-width: 620px) {
+  .page-contacto .contact-section {
+    gap: 7px;
+    padding-top: 58px;
+  }
+
+  .page-contacto .contact-copy h2 {
+    font-size: clamp(2.15rem, 10vw, 2.8rem);
+  }
+
+  .page-contacto .contact-copy p {
+    max-width: 96%;
+    font-size: 0.74rem;
+    line-height: 1.22;
+  }
+
+  .page-contacto .contact-form {
+    gap: 8px;
+    padding: 13px;
+  }
+
+  .page-contacto .contact-form label {
+    gap: 4px;
+    font-size: 0.74rem;
+  }
+
+  .page-contacto .contact-form input,
+  .page-contacto .contact-form select,
+  .page-contacto .contact-form textarea {
+    padding: 9px 10px;
+    min-height: 38px;
+  }
+
+  .page-contacto .contact-form textarea {
+    height: 72px;
+    min-height: 72px;
+  }
+
+  .page-contacto .contact-form .button {
+    min-height: 40px;
+    padding: 9px 12px;
+  }
+
+  .page-contacto .location-card {
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  }
+
+  .page-contacto .location-card .contact-map,
+  .page-contacto .location-card .contact-map iframe {
+    min-height: 108px;
+  }
+
+  .page-contacto .location-copy {
+    padding: 7px 8px;
+  }
+
+  .page-contacto .location-copy h2 {
+    margin-bottom: 3px;
+    font-size: 1.03rem;
+  }
+
+  .page-contacto .location-address {
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 6px;
+    margin: 3px 0 4px;
+  }
+
+  .page-contacto .location-address span {
+    width: 24px;
+    height: 24px;
+  }
+
+  .page-contacto .location-address p {
+    font-size: 0.68rem;
+    line-height: 1.2;
+  }
+
+  .page-contacto .location-copy a {
+    min-height: 28px;
+    padding: 5px 7px;
+    font-size: 0.68rem;
+  }
+
+  .page-contacto .contact-methods.full {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .page-contacto .contact-methods.full a {
+    display: inline-flex;
+    flex: 0 1 auto;
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .page-contacto .contact-methods.full a svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+}
