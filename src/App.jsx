@@ -127,6 +127,14 @@ const initialForm = {
   mensaje: ''
 };
 
+const initialProjectForm = {
+  nombre: '',
+  tipo: 'Residencial',
+  lugar: '',
+  descripcion: '',
+  imagenes: []
+};
+
 
 
 const publicPages = ['inicio', 'proyectos', 'cotizador', 'contacto'];
