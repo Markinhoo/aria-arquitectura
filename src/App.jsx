@@ -687,6 +687,7 @@ function PublicSite() {
         <section id="contacto" className="section contact-section">
           <div className="contact-copy">
             <h2>Contacto</h2>
+            <p>Agenda una primera conversaci&oacute;n para revisar alcance, ubicaci&oacute;n, presupuesto y tiempos del proyecto.</p>
           </div>
 
           <form className="contact-form" onSubmit={handleSubmit}>
