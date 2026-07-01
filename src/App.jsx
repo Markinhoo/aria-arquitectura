@@ -687,26 +687,6 @@ function PublicSite() {
         <section id="contacto" className="section contact-section">
           <div className="contact-copy">
             <h2>Contacto</h2>
-            <p className="section-lede">Cuéntanos que quieres construir.</p>
-            <p>
-              Agenda una primera conversación para revisar alcance, ubicación, presupuesto y tiempos del proyecto.
-            </p>
-
-            <div className="contact-methods">
-              <a href="mailto:hola@ariaarquitectura.mx">
-                <FaEnvelope aria-hidden="true" /> hola@ariaarquitectura.mx
-              </a>
-              <a href="tel:+526182066391">
-                <FaPhone aria-hidden="true" /> +52 618 206 6391
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer">
-                <FaInstagram aria-hidden="true" /> Instagram
-              </a>
-              <span>
-                <FaLocationDot aria-hidden="true" /> Cancer 139, Sahop, Durango
-              </span>
-
-            </div>
           </div>
 
           <form className="contact-form" onSubmit={handleSubmit}>
@@ -774,6 +754,18 @@ function PublicSite() {
                 <FaLocationDot aria-hidden="true" /> Abrir ubicacion en Google Maps
               </a>
             </div>
+          </div>
+
+          <div className="contact-methods full">
+            <a href="mailto:hola@ariaarquitectura.mx">
+              <FaEnvelope aria-hidden="true" /> hola@ariaarquitectura.mx
+            </a>
+            <a href="tel:+526182066391">
+              <FaPhone aria-hidden="true" /> +52 618 206 6391
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer">
+              <FaInstagram aria-hidden="true" /> Instagram
+            </a>
           </div>
         </section>
       </main>
