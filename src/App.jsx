@@ -699,15 +699,13 @@ function PublicSite() {
               <a href="tel:+526182066391">
                 <FaPhone aria-hidden="true" /> +52 618 206 6391
               </a>
-              <span>
-                <FaLocationDot aria-hidden="true" /> Cancer 139, Sahop, Durango
-              </span>
               <a href="https://instagram.com" target="_blank" rel="noreferrer">
                 <FaInstagram aria-hidden="true" /> Instagram
               </a>
-              <a href="https://maps.app.goo.gl/mfGNuPTV8sZBWJ156" target="_blank" rel="noreferrer">
-                <FaLocationDot aria-hidden="true" /> Abrir ubicacion
-              </a>
+              <span>
+                <FaLocationDot aria-hidden="true" /> Cancer 139, Sahop, Durango
+              </span>
+
             </div>
           </div>
 

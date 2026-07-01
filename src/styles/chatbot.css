@@ -193,3 +193,78 @@
     padding: 16px;
   }
 }
+@media (min-width: 901px) {
+  .page-cotizador .quote-section {
+    min-height: 100svh;
+    height: 100svh;
+    overflow: hidden;
+    align-content: center;
+    padding-top: clamp(86px, 7vw, 104px);
+    padding-bottom: clamp(18px, 3vw, 28px);
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--page-bg) 92%, transparent), color-mix(in srgb, var(--page-bg) 72%, transparent)),
+      url('/brand/planos-bg.svg') center / cover no-repeat,
+      var(--page-bg);
+  }
+
+  .page-cotizador .section-heading {
+    margin-bottom: 18px;
+  }
+
+  .page-cotizador .section-heading h2 {
+    font-size: clamp(2.7rem, 4.5vw, 4.2rem);
+  }
+
+  .page-cotizador .section-lede {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+  }
+
+  .page-cotizador .quote-chatbot {
+    width: min(920px, 100%);
+  }
+
+  .page-cotizador .quote-chatbot-panel {
+    grid-template-columns: minmax(250px, 0.82fr) minmax(360px, 1.18fr);
+  }
+
+  .page-cotizador .quote-chatbot-header {
+    padding: clamp(20px, 3vw, 30px);
+  }
+
+  .page-cotizador .quote-chatbot-header strong {
+    font-size: clamp(2rem, 3.3vw, 3.1rem);
+  }
+
+  .page-cotizador .quote-chatbot-body {
+    gap: 10px;
+    padding: clamp(16px, 2vw, 22px);
+  }
+
+  .page-cotizador .chat-bubble {
+    padding: 10px 12px;
+  }
+
+  .page-cotizador .quote-chatbot-form {
+    gap: 9px;
+  }
+
+  .page-cotizador .quote-chatbot-form input,
+  .page-cotizador .quote-chatbot-form select {
+    padding: 9px 11px;
+  }
+
+  .page-cotizador .quote-chatbot-submit,
+  .page-cotizador .quote-chatbot-footer a {
+    min-height: 42px;
+    padding: 10px 12px;
+  }
+
+  .page-cotizador .estimate-result ul {
+    gap: 5px;
+    margin: 8px 0;
+  }
+
+  .page-cotizador .estimate-result li {
+    padding-top: 5px;
+  }
+}

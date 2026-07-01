@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="1600" height="1000" fill="#15120f"/>
+  <g opacity="0.16" stroke="#fff4e6" stroke-width="2" fill="none">
+    <path d="M130 170h460v270H130z"/>
+    <path d="M170 210h155v110H170zM365 210h185v185H365zM170 345h120v70"/>
+    <path d="M620 120h520v360H620z"/>
+    <path d="M675 175h170v250H675zM885 175h205v120M885 335h205v90"/>
+    <path d="M1230 250h260v320h-260zM1275 300h165v95M1275 435h75v95"/>
+    <path d="M210 585h520v260H210zM260 635h165v160M465 635h210v80M465 760h210"/>
+    <path d="M810 590h560v245H810zM860 640h155v145M1055 640h265v65M1055 745h110M1210 745h110"/>
+  </g>
+  <g opacity="0.1" stroke="#d7b28c" stroke-width="1" fill="none">
+    <path d="M80 90h1450M80 500h1450M80 910h1450M90 70v860M515 70v860M940 70v860M1365 70v860"/>
+    <path d="M0 0l1600 1000M1600 0L0 1000"/>
+  </g>
+  <g opacity="0.18" fill="#d7b28c" font-family="Arial, sans-serif" font-size="28">
+    <text x="132" y="145">PLANTA ARQUITECTONICA</text>
+    <text x="620" y="95">CORTE / INSTALACIONES</text>
+    <text x="210" y="560">DISTRIBUCION</text>
+  </g>
+</svg>

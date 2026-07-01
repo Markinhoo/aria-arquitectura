@@ -363,3 +363,51 @@
     padding: 10px 14px;
   }
 }
+
+@media (max-width: 620px) {
+  .contact-section {
+    display: grid;
+  }
+
+  .contact-form {
+    order: 1;
+  }
+
+  .contact-copy {
+    order: 2;
+    max-width: none;
+  }
+
+  .location-card {
+    order: 3;
+  }
+
+  .contact-methods {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    align-items: start;
+  }
+
+  .contact-methods a,
+  .contact-methods span {
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-methods span {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 0.82rem;
+  }
+
+  .contact-methods svg {
+    flex: 0 0 auto;
+  }
+}
