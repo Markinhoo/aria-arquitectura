@@ -856,7 +856,6 @@ function CostEstimatorChatbot() {
         <div className="quote-chatbot-panel" role="dialog" aria-modal="false" aria-label="Estimador de costos ARIA">
           <header className="quote-chatbot-header">
             <div>
-              <span><FaCalculator aria-hidden="true" /></span>
               <div>
                 <strong>Estimador ARIA</strong>
                 <small>Costos preliminares en Durango</small>
